@@ -1,7 +1,7 @@
 import { request, gql } from 'graphql-request'
-import { GovernanceProposals } from '../types'
+import { GovernanceProposal, GovernanceProposalSource } from '../types'
 
-const query = gql`
+const tallyQuery = gql`
   query {
     proposals(where: { status: SUCCEEDED }) {
       id
@@ -14,20 +14,59 @@ const query = gql`
     }
   }
 `
-export const getProposals = async (): Promise<GovernanceProposals[]> => {
-  const response = await request(
-    'https://api.thegraph.com/subgraphs/name/withtally/tally-testing-v1',
-    query
-  )
 
-  console.log(response.proposals)
+const snapshotQuery = gql`
+  query {
+    proposals(
+      first: 20
+      skip: 0
+      where: { space_in: ["balancer", "yam.eth"], state: "closed" }
+      orderBy: "created"
+      orderDirection: desc
+    ) {
+      id
+      title
+      body
+      choices
+      start
+      end
+      snapshot
+      state
+      author
+      space {
+        id
+        name
+      }
+    }
+  }
+`
 
-  return response.proposals.map((item) => ({
+export const getProposals = async (
+  source: GovernanceProposalSource
+): Promise<GovernanceProposal[]> => {
+  const url =
+    source === 'snapshot'
+      ? 'https://hub.snapshot.org/graphql'
+      : 'https://api.thegraph.com/subgraphs/name/withtally/tally-testing-v1'
+
+  const query = source === 'snapshot' ? snapshotQuery : tallyQuery
+  const response = await request(url, query)
+
+  if (source === 'tally') {
+    return response.proposals.map((item: any) => ({
+      id: item.id,
+      title: item.data.description,
+      proposer: {
+        address: item.proposer.id,
+      },
+    }))
+  }
+
+  return response.proposals.map((item: any) => ({
     id: item.id,
-    title: item.data.description,
+    title: item.title,
     proposer: {
-      address: item.proposer.id,
+      address: item.author,
     },
   }))
-  return response.proposals
 }

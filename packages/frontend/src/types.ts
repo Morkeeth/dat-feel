@@ -4,12 +4,19 @@ export type Task = {
 }
 
 type Proposer = {
-  account: string
+  address: string
 }
 
-export type GovernanceProposals = {
+export type GovernanceProposal = {
   id: string
   body?: string
   title: string
   proposer: Proposer
+}
+
+export type GovernanceProposalSource = 'tally' | 'snapshot'
+
+export type TaskCreationDataArgs = {
+  title: string
+  body: string
 }
