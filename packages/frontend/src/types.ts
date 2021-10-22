@@ -3,8 +3,13 @@ export type Task = {
   title: string
 }
 
-export type GovernanceItem = {
+type Proposer = {
+  account: string
+}
+
+export type GovernanceProposals = {
   id: string
-  body: string
+  body?: string
   title: string
+  proposer: Proposer
 }

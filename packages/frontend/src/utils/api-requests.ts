@@ -1,33 +1,33 @@
 import { request, gql } from 'graphql-request'
-import { GovernanceItem } from '../types'
+import { GovernanceProposals } from '../types'
 
 const query = gql`
-  query Proposals {
-    proposals(
-      first: 20
-      skip: 0
-      where: { space_in: ["balancer", "yam.eth"], state: "closed" }
-      orderBy: "created"
-      orderDirection: desc
-    ) {
+  query {
+    proposals(where: { status: SUCCEEDED }) {
       id
-      title
-      body
-      choices
-      start
-      end
-      snapshot
-      state
-      author
-      space {
+      proposer {
         id
-        name
+      }
+      data {
+        description
       }
     }
   }
 `
-export const getGovernanceTasks = async (): Promise<GovernanceItem[]> => {
-  const response = await request('https://hub.snapshot.org/graphql', query)
+export const getProposals = async (): Promise<GovernanceProposals[]> => {
+  const response = await request(
+    'https://api.thegraph.com/subgraphs/name/withtally/tally-testing-v1',
+    query
+  )
 
+  console.log(response.proposals)
+
+  return response.proposals.map((item) => ({
+    id: item.id,
+    title: item.data.description,
+    proposer: {
+      address: item.proposer.id,
+    },
+  }))
   return response.proposals
 }
