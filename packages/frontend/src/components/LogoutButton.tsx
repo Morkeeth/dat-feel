@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
-import useWeb3 from '../web3/useWeb3'
 import Button from './Button'
+import useWeb3 from '../web3/useWeb3'
 
 type Props = {}
 

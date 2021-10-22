@@ -1,4 +1,4 @@
-import hardhatContracts from '../generated/contracts/hardhat_contracts.json'
+// import hardhatContracts from '../generated/contracts/hardhat_contracts.json'
 import { ContractName } from '../web3/web3-config'
 import { Chains } from '../web3/web3-enums'
 
@@ -13,5 +13,5 @@ export const getAddressFromDeployment = (
 ): string => {
   const deploymentName = deployments[chainId]
 
-  return hardhatContracts[chainId][deploymentName].contracts[contractName].address
+  // return hardhatContracts[chainId][deploymentName].contracts[contractName].address
 }

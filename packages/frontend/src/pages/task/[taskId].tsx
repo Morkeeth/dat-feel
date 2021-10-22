@@ -1,13 +1,13 @@
 import type { NextPage } from 'next'
 import React from 'react'
-import BoardPage from '../components/board/BoardPage'
-import SEO from '../components/SEO'
+import TaskPage from '../../components/task/TaskPage'
+import SEO from '../../components/SEO'
 
 const Page: NextPage = () => {
   return (
     <>
-      <SEO title="Create" />
-      <BoardPage />
+      <SEO title="Task id:" />
+      <TaskPage />
     </>
   )
 }
