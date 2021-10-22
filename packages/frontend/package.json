@@ -1,0 +1,30 @@
+{
+  "name": "@dat-feel/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ethersproject/contracts": "5.5.0",
+    "@ethersproject/providers": "5.5.0",
+    "@geist-ui/react": "2.2.0",
+    "@geist-ui/react-icons": "1.0.1",
+    "@usedapp/core": "0.5.4",
+    "ethers": "5.5.1",
+    "ipfs-http-client": "53.0.1",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "styled-components": "5.3.3"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.31",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "typescript": "4.4.4"
+  }
+}

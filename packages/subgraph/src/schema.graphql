@@ -1,15 +1,23 @@
-type Purpose @entity {
+type Organisation @entity {
   id: ID!
+  address: Bytes!
   sender: Sender!
-  purpose: String!
   createdAt: BigInt!
   transactionHash: String!
+  transactions: [OrganisationTransaction!] @derivedFrom(field: "organisation")
 }
 
 type Sender @entity {
   id: ID!
   address: Bytes!
-  purposes: [Purpose!] @derivedFrom(field: "sender")
   createdAt: BigInt!
-  purposeCount: BigInt!
+}
+
+type OrganisationTransaction @entity {
+  id: ID!
+  sender: Sender!
+  organisation: Organisation!
+  amount: BigInt!
+  createdAt: BigInt!
+  transactionHash: String!
 }

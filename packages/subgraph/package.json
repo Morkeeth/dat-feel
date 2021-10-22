@@ -1,20 +1,24 @@
 {
-  "name": "@scaffold-eth/subgraph",
+  "name": "@dat-feel/subgraph",
   "license": "UNLICENSED",
   "version": "1.0.0",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ GITHUB_USERNAME/your-contract",
-    "create-local": "graph create --node http://localhost:8020/ scaffold-eth/your-contract",
-    "remove-local": "graph remove --node http://localhost:8020/ scaffold-eth/your-contract",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ GITHUB_USERNAME/master",
+    "auth-graph": "graph auth https://api.thegraph.com/deploy/",
+    "create-local": "graph create --node http://localhost:8020/ dat-feel/master",
+    "remove-local": "graph remove --node http://localhost:8020/ dat-feel/master",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 dat-feel/master"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.22.1",
-    "@graphprotocol/graph-ts": "^0.22.1"
+    "@graphprotocol/graph-cli": "0.20.1",
+    "@graphprotocol/graph-ts": "0.20.0",
+    "@typescript-eslint/eslint-plugin": "5.1.0",
+    "@typescript-eslint/parser": "5.1.0",
+    "which": "2.0.2"
   },
   "devDependencies": {
-    "mustache": "^3.1.0"
+    "mustache": "4.2.0"
   }
 }

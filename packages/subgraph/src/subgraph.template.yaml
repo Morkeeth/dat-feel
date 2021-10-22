@@ -3,23 +3,42 @@ schema:
   file: ./src/schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: YourContract
+    name: Master
     network: localhost
     source:
-      address: "{{localhost_YourContractAddress}}"
-      abi: YourContract
+      address: '{{MasterAddress}}'
+      abi: Master
       startBlock: 1
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Purpose
+        - Organization
         - Sender
       abis:
-        - name: YourContract
-          file: ./abis/localhost_YourContract.json
+        - name: Master
+          file: ./abis/Master.json
       eventHandlers:
-        - event: SetPurpose(address,string)
-          handler: handleSetPurpose
+        - event: OrganisationRegistered(address,indexed address)
+          handler: handleCreateNewService
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: Business
+    network: localhost
+    source:
+      abi: Business
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - OrganisationTransaction
+      abis:
+        - name: Business
+          file: ./abis/Business.json
+      eventHandlers:
+        - event: ReceivedTransferBusiness(indexed address,indexed address,uint256)
+          handler: handleBusinessTransaction
       file: ./src/mapping.ts
