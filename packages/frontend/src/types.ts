@@ -20,3 +20,9 @@ export type User = {
   applications: number[]
   xp: number
 }
+
+export type GovernanceItem = {
+  id: string
+  body: string
+  title: string
+}
