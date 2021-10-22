@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { useModal, Button, Modal, Input, Grid, Textarea, useInput } from '@geist-ui/react'
+import { useModal, Button, Modal, Input, Grid, Textarea, useInput, Select } from '@geist-ui/react'
 import { GovernanceProposal } from '../../types'
 import { useTasksContext } from '../../contexts/TasksContext'
 
@@ -9,7 +9,12 @@ type Props = { proposal: GovernanceProposal }
 const CreateTaskModal: FC<Props> = ({ proposal }) => {
   const { setVisible, bindings } = useModal()
   const { createTask, isCreating } = useTasksContext()
-  const { state, bindings: descriptionBindings } = useInput('')
+  const { state: body, bindings: descriptionBindings } = useInput('')
+  const { state: compansation, bindings: compansationBindings } = useInput('')
+
+  const [level, setLevel] = React.useState('')
+
+  const reset = () => {}
 
   const submit = (e: any) => {
     if (isCreating) {
@@ -18,7 +23,8 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
 
     const data = {
       title: proposal.title,
-      body: state,
+      body,
+      level,
     }
     createTask(data)
 
@@ -42,7 +48,31 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
                 <Textarea width="100%" placeholder="Description" {...descriptionBindings} />
               </Grid>
               <Grid xs={24}>
-                <Textarea width="100%" placeholder="Proposer" value={proposal.proposer.address} />
+                <Input width="100%" icon="$" placeholder="Compansation" {...compansationBindings} />
+              </Grid>
+              <Grid xs={24}>
+                <Select
+                  width="100%"
+                  placeholder="Level"
+                  clearable
+                  onChange={(value) => setLevel(value as string)}
+                >
+                  {Array(10)
+                    .fill(null)
+                    .map((_, index) => (
+                      <Select.Option key={index} value={(index + 1).toString()}>
+                        Level {index + 1}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Grid>
+              <Grid xs={24}>
+                <Input
+                  width="100%"
+                  placeholder="Proposer"
+                  disabled
+                  value={proposal.proposer.address}
+                />
               </Grid>
 
               <Grid>

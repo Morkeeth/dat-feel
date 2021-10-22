@@ -25,7 +25,7 @@ const ProposalList: FC = () => {
         <Grid.Container gap={4}>
           {data?.map((item) => (
             <Grid key={item.id} xs={8}>
-              <Card>
+              <Card width="100%">
                 <Text h3>{item.title}</Text>
                 <div>
                   <Text h6>Proposer: {formatAddressToShort(item.proposer.address)}</Text>
