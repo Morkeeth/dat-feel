@@ -71,3 +71,4 @@ packages/hardhat/artifacts/**/*
 
 # Generated types
 generated
+yarn.lock

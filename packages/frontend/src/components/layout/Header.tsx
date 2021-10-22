@@ -1,16 +1,22 @@
 import React, { FC } from 'react'
-import { Grid, Page, Spacer } from '@geist-ui/react'
+import { Button, Grid, Page, Spacer } from '@geist-ui/react'
 import useWeb3 from '../../web3/useWeb3'
+import WalletConnectButton from '../WalletConnectButton'
 
-type Props = {}
-
-const Header: FC<Props> = () => {
+const Header: FC = () => {
   const { account, chainId, connected } = useWeb3()
 
-  if (!connected) {
-    return null
-  }
-  return <Page.Header />
+  return (
+    <Page.Header>
+      <Grid.Container justify="space-between">
+        <Grid>Logo</Grid>
+        <Grid>
+          <WalletConnectButton>{account}</WalletConnectButton>
+        </Grid>
+      </Grid.Container>
+      <Grid h="5" />
+    </Page.Header>
+  )
 }
 
 export default Header
