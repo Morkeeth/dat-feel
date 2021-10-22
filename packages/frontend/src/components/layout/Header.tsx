@@ -4,7 +4,7 @@ import useWeb3 from '../../web3/useWeb3'
 import WalletConnectButton from '../WalletConnectButton'
 
 const Header: FC = () => {
-  const { account, chainId, connected } = useWeb3()
+  const { account } = useWeb3()
 
   return (
     <Page.Header>
