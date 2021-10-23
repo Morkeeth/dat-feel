@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
 import Link from 'next/link'
-import { Card, Grid, Text, Badge, Spacer } from '@geist-ui/react'
+import { Card, Grid, Text } from '@geist-ui/react'
 import styled from 'styled-components'
 import TaskStatus from '../task/TaskStatus'
 
