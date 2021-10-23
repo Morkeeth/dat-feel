@@ -10,6 +10,10 @@ import StatusDot from '../StatusDot'
 import { TaskStatus } from '../../config/enums'
 import TaskCard from '../task/TaskCard'
 
+const GridColumn = styled(Grid)`
+  width: 100%;
+`
+
 type Props = {
   tasks: TaskEntity[]
 }
@@ -25,9 +29,9 @@ const TasksList: FC<Props> = ({ tasks }) => {
   return (
     <Column gap={3}>
       {tasks.map((task) => (
-        <Grid key={task.id} direction="column">
+        <GridColumn key={task.id} direction="column">
           <TaskCard task={task} />
-        </Grid>
+        </GridColumn>
       ))}
     </Column>
   )

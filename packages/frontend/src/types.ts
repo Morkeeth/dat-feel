@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
-import { TaskStatus } from '../src/config/enums'
+import TaskEntity from './stores/entities/TaskEntity'
+import { TaskStatus } from './config/enums'
 
 // To-do: Fix better / more accurate typing
 type Markdown = string
@@ -25,7 +26,7 @@ export type Task = {
 export type User = {
   id: string
   ipfsContract: string
-  completedTasks: Task[]
+  completedTasks: TaskEntity[]
   applications: number[]
   xp: number
   bio: Markdown

@@ -19,7 +19,7 @@ const TaskStatusDot: FC<Props> = ({ status }) => {
       return 'warning'
     }
     if (status === TaskStatus.COMPLETE) {
-      return 'error'
+      return 'secondary'
     }
   }
 

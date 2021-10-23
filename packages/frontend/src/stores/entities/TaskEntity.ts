@@ -84,6 +84,7 @@ class TaskEntity {
     await contract.acceptFulfillment(this.approvers[0], this.id, this.fullFillId as any, 0, [
       this.amount,
     ])
+    taskStore.fetchTasks()
   }
 
   fullfill = async () => {

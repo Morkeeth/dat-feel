@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Card, Grid, Spacer, Spinner, Text, useTheme } from '@geist-ui/react'
+import { Card, Grid, Spacer, Spinner, Text } from '@geist-ui/react'
 import { observer } from 'mobx-react-lite'
 import TasksList from './TasksList'
 import useTasks from '../../hooks/useTasks'
@@ -12,14 +12,13 @@ type Props = {
 
 const Board: FC<Props> = ({ owner }) => {
   const { tasks, loading } = useTasks(owner)
-  const theme = useTheme()
-
   if (loading) {
     return <Spinner />
   }
 
   const openTasks = tasks.filter((task) => task.status === TaskStatus.OPEN)
   const reviewTasks = tasks.filter((task) => task.status === TaskStatus.REVIEW)
+  const completedTasks = tasks.filter((task) => task.status === TaskStatus.COMPLETE)
 
   return (
     <>
@@ -35,6 +34,7 @@ const Board: FC<Props> = ({ owner }) => {
         </Grid>
         <Grid xs={8} direction="column">
           <Text h3>Done</Text>
+          <TasksList tasks={completedTasks} />
         </Grid>
       </Grid.Container>
       <Spacer h={4} />

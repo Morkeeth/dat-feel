@@ -1,18 +1,21 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Spacer, Text, User } from '@geist-ui/react'
+import { Spacer, Text } from '@geist-ui/react'
+import UserLink from '../UserLink'
+import { useTaskContext } from '../../contexts/TaskContext'
 
 type Props = {
   validator: string
 }
 
-const TaskContact: FC<Props> = ({ validator }) => {
+const TaskContact: FC<Props> = () => {
+  const { task } = useTaskContext()
+
   return (
     <div>
       <Text h3>Contact</Text>
-      <User src="https://unix.bio/assets/avatar.png" name={validator}>
-        Task validator
-      </User>
+      <UserLink address={task.approvers[0]} />
+
       <Spacer h={2} />
     </div>
   )

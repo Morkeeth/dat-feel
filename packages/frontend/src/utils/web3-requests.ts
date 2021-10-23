@@ -45,8 +45,8 @@ export const getDAO = async (org: { url: string }): Promise<OrgMetaData> => {
 export const getUser = async (userId: string): Promise<User> => {
   return {
     id: userId,
-    ipfsContract: '0xgord',
     completedTasks: [],
+    ipfsContract: '0xgord',
     applications: [5353536, 646464],
     xp: 126000,
     bio: 'Lorem ipsum bio, LFG!',

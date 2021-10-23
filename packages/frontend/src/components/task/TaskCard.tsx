@@ -10,6 +10,8 @@ import GradientText from '../GradientText'
 import { formatBigNumber } from '../../utils/formatters'
 import Countup from '../Countup'
 import TaskEntity from '../../stores/entities/TaskEntity'
+import { TaskStatus } from '../../config/enums'
+import UserLink from '../UserLink'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -24,8 +26,8 @@ const StyledTitle = styled(Text)`
 `
 
 const StyledCard = styled(Card)`
-  max-width: 450px;
-  min-width: 450px;
+  max-height: 150px;
+  min-height: 150px;
   &:hover {
     cursor: pointer;
   }
@@ -40,6 +42,7 @@ const TaskCard: FC<{ task: TaskEntity }> = ({ task }) => {
       <StyledCard width="100%" key={task.id} hoverable onClick={() => setVisible(true)}>
         <TopWrapper>
           <TaskStatusDot status={task?.status} />
+          {task.status !== TaskStatus.OPEN && <UserLink link address={task.fullfiller} />}
           <GradientText span b fromColor="rgb(255, 159, 225)" toColor="rgb(135, 39, 255)">
             <Countup value={formatBigNumber(task?.amount)} /> ETH
           </GradientText>
