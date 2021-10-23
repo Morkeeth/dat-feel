@@ -23,7 +23,7 @@ const mnemonic = (): string => {
         chalk.red(' and then ') +
         chalk.cyan(`yarn run account`)
     )
-    process.exit(1)
+    // process.exit(1)
   }
 }
 
