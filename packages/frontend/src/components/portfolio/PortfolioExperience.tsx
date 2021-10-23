@@ -12,9 +12,7 @@ const PortfolioExperience: FC = () => {
     <Grid.Container gap={1}>
       {user.completedTasks.map((task) => (
         <Grid key={task.id} xs={24} md={12} justify="flex-start">
-          <Link href={`/task/${task.id}`} passHref>
-            <TaskCard task={task} />
-          </Link>
+          <TaskCard task={task} />
         </Grid>
       ))}
     </Grid.Container>
