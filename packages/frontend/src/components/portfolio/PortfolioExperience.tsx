@@ -9,7 +9,6 @@ import { useUserContext } from '../../contexts/UserContext'
 const PortfolioExperience: FC = () => {
   const { completedTasks } = useUserContext()
 
-  console.log(completedTasks)
   return (
     <Grid.Container gap={1}>
       {completedTasks.map((task) => (

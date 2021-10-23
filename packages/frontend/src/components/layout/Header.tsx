@@ -38,7 +38,7 @@ const Header: FC = () => {
           </Grid.Container>
         </Grid>
       </Grid.Container>
-      <Grid h="5" />
+      <Grid h="3" />
     </Page.Header>
   )
 }

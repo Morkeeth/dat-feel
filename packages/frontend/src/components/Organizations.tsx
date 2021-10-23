@@ -4,9 +4,6 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { observer } from 'mobx-react-lite'
-import { organizations } from '../config/config'
-import { OrgMetaData } from '../types'
-import { getDAO } from '../utils/web3-requests'
 import { orgStore } from '../stores/orgStore'
 
 const Logo = styled.div`
@@ -31,10 +28,14 @@ const Organizations: FC = () => {
             <Logo>
               <Link href={`/dao/${org.url}`} passHref>
                 <a>
-                  <img src={org.logo} />
+                  <img src={org.logoUri} />
                 </a>
               </Link>
             </Logo>
+            <Spacer h={1} />
+            <Text style={{ margin: 0, textAlign: 'center' }} type="secondary">
+              {org.name}
+            </Text>
           </Grid>
         ))}
       </Grid.Container>

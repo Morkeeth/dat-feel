@@ -2,8 +2,7 @@ import { useToasts } from '@geist-ui/react'
 import { TaskCreationDataArgs } from '../types'
 import { taskStore } from '../stores/taskStore'
 
-const useCreateTask = (owner?: string) => {
-  const tasks = taskStore.tasks
+const useCreateTask = () => {
   const [, setToast] = useToasts()
 
   return {
