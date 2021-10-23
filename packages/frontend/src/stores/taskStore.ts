@@ -2,23 +2,27 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { ethers } from 'ethers'
 import TaskEntity from './entities/TaskEntity'
 import { web3Store } from './web3Store'
-import { StandardBounties__factory } from '../generated/types'
+import { StandardBounties, StandardBounties__factory } from '../generated/types'
 import { getAddressFromDeployment } from '../utils/address'
 import { ipfsClient } from '../utils/ipfs'
 import { TaskCreationDataArgs } from '../types'
 import { TaskStatus } from '../config/enums'
+import { formatBigNumber } from '../utils/formatters'
 
 type Store = {
   tasks: TaskEntity[]
+  users: any
   setTasks: (tasks: TaskEntity[]) => void
   fetchTasks: () => void
   isFetching: boolean
   isCreating: boolean
   createTask: (args: TaskCreationDataArgs) => Promise<any>
+  fetchUsers: () => void
 }
 
 export const taskStore = makeAutoObservable<Store>({
   tasks: [],
+  users: [],
   isFetching: false,
   isCreating: false,
   setTasks: (tasks: TaskEntity[]) => {
@@ -65,6 +69,29 @@ export const taskStore = makeAutoObservable<Store>({
       })
     }
     return {}
+  },
+
+  fetchUsers: async () => {
+    const contract = StandardBounties__factory.connect(
+      getAddressFromDeployment('StandardBounties', web3Store.chainId),
+      web3Store.provider
+    )
+
+    const users = await contract.queryFilter('UserAdded', 0, 'latest')
+
+    const normalizedUsers = users
+      .map(({ args }) => {
+        const [userAddress, xp] = args
+        return {
+          userAddress,
+          xp: `${Math.floor(parseFloat(formatBigNumber(xp)))}`,
+        }
+      })
+      .sort((userA, userB) => (userB.xp > userA.xp ? 1 : -1))
+
+    runInAction(() => {
+      taskStore.users = normalizedUsers
+    })
   },
 
   fetchTasks: async () => {

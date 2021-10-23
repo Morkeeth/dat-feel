@@ -266,6 +266,7 @@ contract StandardBounties {
     if (!users[_sender].isValid) {
       users[_sender] = User(_sender, 0, true); // Initial xp value of the user will be 0
       contributor = users[_sender];
+      emit UserAdded(_sender, 0);
     }
 
     bounties[_bountyId].contributions.push(Contribution(contributor, _amount, false)); // Adds the contribution to the bounty
@@ -431,6 +432,15 @@ contract StandardBounties {
   ) public senderIsValid(_sender) validateBountyArrayIndex(_bountyId) {
     require(now < bounties[_bountyId].deadline); // Submissions are only allowed to be made before the deadline
     require(_fulfillers.length > 0); // Submissions with no fulfillers would mean no one gets paid out
+
+    User storage contributor = users[_fulfillers[0]];
+
+    // If user deesn't exist, then register it
+    if (!users[_fulfillers[0]].isValid) {
+      users[_fulfillers[0]] = User(_fulfillers[0], 0, true); // Initial xp value of the user will be 0
+      contributor = users[_fulfillers[0]];
+      emit UserAdded(_fulfillers[0], 0);
+    }
 
     bounties[_bountyId].fulfillments.push(Fulfillment(_fulfillers, _sender));
 
@@ -809,6 +819,7 @@ contract StandardBounties {
    * Events
    */
 
+  event UserAdded(address payable _userAddress, uint256 _xp);
   event BountyIssued(
     uint256 _bountyId,
     address payable _creator,
