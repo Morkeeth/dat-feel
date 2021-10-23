@@ -5,6 +5,7 @@ import { TaskStatus } from '../config/enums'
 import { Task, User, OrgMetaData } from '../types'
 
 export const getTask = async (taskId: string): Promise<Task> => {
+  return {}
   return {
     approvers: ['0x1', '0x2'],
     id: '0xabc',
@@ -32,7 +33,6 @@ export const getDAO = async (org: { url: string }): Promise<OrgMetaData> => {
     return {
       ...org,
       ...data,
-      name: 'Olympus DAO',
       tvl: '$3.4M',
       tasks: 1201,
     }

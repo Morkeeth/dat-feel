@@ -39,8 +39,12 @@ export const taskStore = makeAutoObservable<Store>({
         body,
         proposalUrl,
       })
+
       const added = await ipfsClient.add(data)
       const url = `https://ipfs.infura.io/ipfs/${added.path}`
+
+      console.log(url)
+      return
       const contract = StandardBounties__factory.connect(
         getAddressFromDeployment('StandardBounties', web3Store.chainId),
         web3Store.signer

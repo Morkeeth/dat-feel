@@ -41,6 +41,8 @@ export type GovernanceProposal = {
   body?: string
   title: string
   proposer: Proposer
+  date: Date
+  link: string
 }
 
 export type GovernanceProposalSource = 'tally' | 'snapshot'
@@ -55,7 +57,7 @@ export type TaskCreationDataArgs = {
 
 export type OrgMetaData = {
   name: string
-  logo: string
+  logoUri: string
   header: string
   discord: string
   twitter: string

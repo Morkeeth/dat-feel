@@ -24,7 +24,7 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
       title: proposal.title,
       body,
       level,
-      proposalUrl: 'http://link.com',
+      proposalUrl: proposal.link,
       compansation,
     }
     create(data)

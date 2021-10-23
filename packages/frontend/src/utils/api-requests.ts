@@ -3,13 +3,15 @@ import { GovernanceProposal, GovernanceProposalSource } from '../types'
 
 const tallyQuery = gql`
   query {
-    proposals(where: { status: SUCCEEDED }) {
+    proposals {
       id
       proposer {
         id
       }
       data {
         description
+        proposalId
+        timestamp
       }
     }
   }
@@ -47,7 +49,7 @@ export const getProposals = async (
   const url =
     source === 'snapshot'
       ? 'https://hub.snapshot.org/graphql'
-      : 'https://api.thegraph.com/subgraphs/name/withtally/tally-testing-v1'
+      : 'https://api.thegraph.com/subgraphs/name/withtally/protocol-compound-v7'
 
   const query = source === 'snapshot' ? snapshotQuery : tallyQuery
   const response = await request(url, query)
@@ -56,6 +58,8 @@ export const getProposals = async (
     return response.proposals.map((item: any) => ({
       id: item.id,
       title: item.data.description,
+      date: new Date(Number(item.data.timestamp) * 1000),
+      link: `https://www.withtally.com/governance/compound/proposal/${item.data.proposalId}`,
       proposer: {
         address: item.proposer.id,
       },
@@ -65,6 +69,8 @@ export const getProposals = async (
   return response.proposals.map((item: any) => ({
     id: item.id,
     title: item.title,
+    date: new Date(),
+    link: '#',
     proposer: {
       address: item.author,
     },
