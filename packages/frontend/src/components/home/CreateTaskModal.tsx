@@ -1,20 +1,19 @@
 import * as React from 'react'
 import { FC } from 'react'
 import { useModal, Button, Modal, Input, Grid, Textarea, useInput, Select } from '@geist-ui/react'
+import { observer } from 'mobx-react-lite'
 import { GovernanceProposal } from '../../types'
 import { useTasksContext } from '../../contexts/TasksContext'
+import useCreateTask from '../../hooks/useCreateTask'
 
 type Props = { proposal: GovernanceProposal }
 
 const CreateTaskModal: FC<Props> = ({ proposal }) => {
   const { setVisible, bindings } = useModal()
-  const { createTask, isCreating } = useTasksContext()
+  const { isCreating, create } = useCreateTask()
   const { state: body, bindings: descriptionBindings } = useInput('')
   const { state: compansation, bindings: compansationBindings } = useInput('')
-
   const [level, setLevel] = React.useState('')
-
-  const reset = () => {}
 
   const submit = (e: any) => {
     if (isCreating) {
@@ -28,7 +27,7 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
       proposalUrl: 'http://link.com',
       compansation,
     }
-    createTask(data)
+    create(data)
 
     setVisible(false)
     e.preventDefault()
@@ -96,4 +95,4 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
   )
 }
 
-export default CreateTaskModal
+export default observer(CreateTaskModal)

@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { FC } from 'react'
 import { Card, Grid, Spacer, Spinner, Text, useTheme } from '@geist-ui/react'
+import { observer } from 'mobx-react-lite'
 import TasksList from './TasksList'
 import useTasks from '../../hooks/useTasks'
-import useWeb3 from '../../web3/useWeb3'
+import { TaskStatus } from '../../config/enums'
 
 type Props = {
-  owner: string
+  owner?: string
 }
 
 const Board: FC<Props> = ({ owner }) => {
@@ -17,20 +18,22 @@ const Board: FC<Props> = ({ owner }) => {
     return <Spinner />
   }
 
-  const openTasks = tasks.filter((task) => true)
+  const openTasks = tasks.filter((task) => task.status === TaskStatus.OPEN)
+  const reviewTasks = tasks.filter((task) => task.status === TaskStatus.REVIEW)
+
   return (
     <>
       <Grid.Container>
-        <Grid xs={6} direction="column">
+        <Grid xs={8} direction="column">
           <Text h3>Open</Text>
           <TasksList tasks={openTasks} />
         </Grid>
 
-        <Grid xs={6} direction="column">
-          <Text h3>Review</Text>
+        <Grid xs={8} direction="column">
+          <Text h3>Review</Text> <TasksList tasks={reviewTasks} />
         </Grid>
-        <Grid xs={6} direction="column">
-          Done
+        <Grid xs={8} direction="column">
+          <Text h3>Done</Text>
         </Grid>
       </Grid.Container>
       <Spacer h={4} />
@@ -38,4 +41,4 @@ const Board: FC<Props> = ({ owner }) => {
   )
 }
 
-export default Board
+export default observer(Board)

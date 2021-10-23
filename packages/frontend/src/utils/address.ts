@@ -10,7 +10,8 @@ export const getAddressFromDeployment = (
   contractName: ContractName,
   chainId: keyof typeof deployments
 ): string => {
-  const deploymentName = deployments[chainId]
+  return hardhatContracts[1337].localhost.contracts.StandardBounties.address
+  // const deploymentName = deployments[chainId]
 
   return (hardhatContracts as any)[chainId][deploymentName].contracts[contractName].address
 }

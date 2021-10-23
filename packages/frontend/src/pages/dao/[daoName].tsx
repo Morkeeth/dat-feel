@@ -36,7 +36,9 @@ export async function getStaticProps(context) {
 
   try {
     const match = organizations.find((o) => o.url === context.params.daoName) || {}
-    org = await getDAO(match)
+    if (match) {
+      org = await getDAO(match as any)
+    }
   } catch (e) {
     console.error(e)
   }

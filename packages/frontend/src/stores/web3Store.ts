@@ -9,6 +9,7 @@ type Store = {
   chainId: number
   contractOwner: string
   account: string
+  blockNumber: 0
 }
 
 export const web3Store = makeAutoObservable<Store>({
@@ -17,4 +18,5 @@ export const web3Store = makeAutoObservable<Store>({
   chainId: undefined,
   contractOwner: undefined,
   account: undefined,
-})
+  blockNumber: 0,
+} as any)
