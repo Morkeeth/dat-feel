@@ -2,18 +2,16 @@
 pragma solidity 0.5.12;
 pragma experimental ABIEncoderV2;
 
-import "./inherited/ERC20Token.sol";
-import "./inherited/ERC721Basic.sol";
-import "hardhat/console.sol";
+import './inherited/ERC20Token.sol';
+import './inherited/ERC721Basic.sol';
+import 'hardhat/console.sol';
+
 // import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-
-
 
 /// @title StandardBounties
 /// @dev A contract for issuing bounties on Ethereum paying in ETH, ERC20, or ERC721 tokens
 /// @author Mark Beylin <mark.beylin@consensys.net>, Gonçalo Sá <goncalo.sa@consensys.net>, Kevin Owocki <kevin.owocki@consensys.net>, Ricardo Guilherme Schmidt (@3esmit), Matt Garnett <matt.garnett@consensys.net>, Craig Williams <craig.williams@consensys.net>
 contract StandardBounties {
-
   using SafeMath for uint256;
 
   /*
@@ -23,10 +21,10 @@ contract StandardBounties {
   struct Bounty {
     address payable[] issuers; // An array of individuals who have complete control over the bounty, and can edit any of its parameters
     address[] approvers; // An array of individuals who are allowed to accept the fulfillments for a particular bounty
-    uint deadline; // The Unix timestamp before which all submissions must be made, and after which refunds may be processed
+    uint256 deadline; // The Unix timestamp before which all submissions must be made, and after which refunds may be processed
     address token; // The address of the token associated with the bounty (should be disregarded if the tokenVersion is 0)
-    uint tokenVersion; // The version of the token being used for the bounty (0 for ETH, 20 for ERC20, 721 for ERC721)
-    uint balance; // The number of tokens which the bounty is able to pay out or refund
+    uint256 tokenVersion; // The version of the token being used for the bounty (0 for ETH, 20 for ERC20, 721 for ERC721)
+    uint256 balance; // The number of tokens which the bounty is able to pay out or refund
     bool hasPaidOut; // A boolean storing whether or not the bounty has paid out at least once, meaning refunds are no longer allowed
     Fulfillment[] fulfillments; // An array of Fulfillments which store the various submissions which have been made to the bounty
     Contribution[] contributions; // An array of Contributions which store the contributions which have been made to the bounty
@@ -39,7 +37,7 @@ contract StandardBounties {
 
   struct Contribution {
     address payable contributor; // The address of the individual who contributed
-    uint amount; // The amount of tokens the user contributed
+    uint256 amount; // The amount of tokens the user contributed
     bool refunded; // A boolean storing whether or not the contribution has been refunded yet
   }
 
@@ -47,10 +45,9 @@ contract StandardBounties {
    * Storage
    */
 
-  uint public numBounties; // An integer storing the total number of bounties in the contract
-  mapping(uint => Bounty) public bounties; // A mapping of bountyIDs to bounties
-  mapping (uint => mapping (uint => bool)) public tokenBalances; // A mapping of bountyIds to tokenIds to booleans, storing whether a given bounty has a given ERC721 token in its balance
-
+  uint256 public numBounties; // An integer storing the total number of bounties in the contract
+  mapping(uint256 => Bounty) public bounties; // A mapping of bountyIDs to bounties
+  mapping(uint256 => mapping(uint256 => bool)) public tokenBalances; // A mapping of bountyIds to tokenIds to booleans, storing whether a given bounty has a given ERC721 token in its balance
 
   address public owner; // The address of the individual who's allowed to set the metaTxRelayer address
   address public metaTxRelayer; // The address of the meta transaction relayer whose _sender is automatically trusted for all contract calls
@@ -61,115 +58,92 @@ contract StandardBounties {
    * Modifiers
    */
 
-  modifier callNotStarted(){
+  modifier callNotStarted() {
     require(!callStarted);
     callStarted = true;
     _;
     callStarted = false;
   }
 
-  modifier validateBountyArrayIndex(
-    uint _index)
-  {
+  modifier validateBountyArrayIndex(uint256 _index) {
     require(_index < numBounties);
     _;
   }
 
-  modifier validateContributionArrayIndex(
-    uint _bountyId,
-    uint _index)
-  {
+  modifier validateContributionArrayIndex(uint256 _bountyId, uint256 _index) {
     require(_index < bounties[_bountyId].contributions.length);
     _;
   }
 
-  modifier validateFulfillmentArrayIndex(
-    uint _bountyId,
-    uint _index)
-  {
+  modifier validateFulfillmentArrayIndex(uint256 _bountyId, uint256 _index) {
     require(_index < bounties[_bountyId].fulfillments.length);
     _;
   }
 
-  modifier validateIssuerArrayIndex(
-    uint _bountyId,
-    uint _index)
-  {
+  modifier validateIssuerArrayIndex(uint256 _bountyId, uint256 _index) {
     require(_index < bounties[_bountyId].issuers.length);
     _;
   }
 
-  modifier validateApproverArrayIndex(
-    uint _bountyId,
-    uint _index)
-  {
+  modifier validateApproverArrayIndex(uint256 _bountyId, uint256 _index) {
     require(_index < bounties[_bountyId].approvers.length);
     _;
   }
 
   modifier onlyIssuer(
-  address _sender,
-  uint _bountyId,
-  uint _issuerId)
-  {
-  require(_sender == bounties[_bountyId].issuers[_issuerId]);
-  _;
+    address _sender,
+    uint256 _bountyId,
+    uint256 _issuerId
+  ) {
+    require(_sender == bounties[_bountyId].issuers[_issuerId], 'only issuer');
+    _;
   }
 
   modifier onlySubmitter(
     address _sender,
-    uint _bountyId,
-    uint _fulfillmentId)
-  {
-    require(_sender ==
-            bounties[_bountyId].fulfillments[_fulfillmentId].submitter);
+    uint256 _bountyId,
+    uint256 _fulfillmentId
+  ) {
+    require(_sender == bounties[_bountyId].fulfillments[_fulfillmentId].submitter);
     _;
   }
 
   modifier onlyContributor(
-  address _sender,
-  uint _bountyId,
-  uint _contributionId)
-  {
-    require(_sender ==
-            bounties[_bountyId].contributions[_contributionId].contributor);
+    address _sender,
+    uint256 _bountyId,
+    uint256 _contributionId
+  ) {
+    require(_sender == bounties[_bountyId].contributions[_contributionId].contributor);
     _;
   }
 
   modifier isApprover(
     address _sender,
-    uint _bountyId,
-    uint _approverId)
-  {
+    uint256 _bountyId,
+    uint256 _approverId
+  ) {
     require(_sender == bounties[_bountyId].approvers[_approverId]);
     _;
   }
 
-  modifier hasNotPaid(
-    uint _bountyId)
-  {
+  modifier hasNotPaid(uint256 _bountyId) {
     require(!bounties[_bountyId].hasPaidOut);
     _;
   }
 
-  modifier hasNotRefunded(
-    uint _bountyId,
-    uint _contributionId)
-  {
+  modifier hasNotRefunded(uint256 _bountyId, uint256 _contributionId) {
     require(!bounties[_bountyId].contributions[_contributionId].refunded);
     _;
   }
 
-  modifier senderIsValid(
-    address _sender)
-  {
+  modifier senderIsValid(address _sender) {
     require(msg.sender == _sender || msg.sender == metaTxRelayer, 'Invalid sender');
     _;
   }
 
- /*
-  * Public functions
-  */
+  /*
+   * Public functions
+   */
 
   constructor() public {
     // The owner of the contract is automatically designated to be the deployer of the contract
@@ -178,9 +152,7 @@ contract StandardBounties {
 
   /// @dev setMetaTxRelayer(): Sets the address of the meta transaction relayer
   /// @param _relayer the address of the relayer
-  function setMetaTxRelayer(address _relayer)
-    external
-  {
+  function setMetaTxRelayer(address _relayer) external {
     require(msg.sender == owner); // Checks that only the owner can call
     require(metaTxRelayer == address(0)); // Ensures the meta tx relayer can only be set once
     metaTxRelayer = _relayer;
@@ -199,17 +171,14 @@ contract StandardBounties {
     address payable[] memory _issuers,
     address[] memory _approvers,
     string memory _data,
-    uint _deadline,
+    uint256 _deadline,
     address _token,
-    uint _tokenVersion)
-    public
-    senderIsValid(_sender)
-    returns (uint)
-  {
+    uint256 _tokenVersion
+  ) public senderIsValid(_sender) returns (uint256) {
     require(_tokenVersion == 0 || _tokenVersion == 20 || _tokenVersion == 721); // Ensures a bounty can only be issued with a valid token version
     require(_issuers.length > 0 || _approvers.length > 0); // Ensures there's at least 1 issuer or approver, so funds don't get stuck
 
-    uint bountyId = numBounties; // The next bounty's index will always equal the number of existing bounties
+    uint256 bountyId = numBounties; // The next bounty's index will always equal the number of existing bounties
 
     Bounty storage newBounty = bounties[bountyId];
     newBounty.issuers = _issuers;
@@ -217,47 +186,52 @@ contract StandardBounties {
     newBounty.deadline = _deadline;
     newBounty.tokenVersion = _tokenVersion;
 
-    if (_tokenVersion != 0){
+    if (_tokenVersion != 0) {
       newBounty.token = _token;
     }
 
     numBounties = numBounties.add(1); // Increments the number of bounties, since a new one has just been added
 
-    emit BountyIssued(bountyId,
-                      _sender,
-                      _issuers,
-                      _approvers,
-                      _data, // Instead of storing the string on-chain, it is emitted within the event for easy off-chain consumption
-                      _deadline,
-                      _token,
-                      _tokenVersion);
+    emit BountyIssued(
+      bountyId,
+      _sender,
+      _issuers,
+      _approvers,
+      _data, // Instead of storing the string on-chain, it is emitted within the event for easy off-chain consumption
+      _deadline,
+      _token,
+      _tokenVersion
+    );
 
     return (bountyId);
   }
 
   /// @param _depositAmount the amount of tokens being deposited to the bounty, which will create a new contribution to the bounty
 
-
   function issueAndContribute(
     address payable _sender,
     address payable[] memory _issuers,
     address[] memory _approvers,
     string memory _data,
-    uint _deadline,
+    uint256 _deadline,
     address _token,
-    uint _tokenVersion,
-    uint _depositAmount)
-    public
-    payable
-    returns(uint)
-  {
-    uint bountyId = issueBounty(_sender, _issuers, _approvers, _data, _deadline, _token, _tokenVersion);
+    uint256 _tokenVersion,
+    uint256 _depositAmount
+  ) public payable returns (uint256) {
+    uint256 bountyId = issueBounty(
+      _sender,
+      _issuers,
+      _approvers,
+      _data,
+      _deadline,
+      _token,
+      _tokenVersion
+    );
 
     contribute(_sender, bountyId, _depositAmount);
 
     return (bountyId);
   }
-
 
   /// @dev contribute(): Allows users to contribute tokens to a given bounty.
   ///                    Contributing merits no privelages to administer the
@@ -271,48 +245,37 @@ contract StandardBounties {
   /// @param _amount the amount of tokens being contributed
   function contribute(
     address payable _sender,
-    uint _bountyId,
-    uint _amount)
-    public
-    payable
-    senderIsValid(_sender)
-    validateBountyArrayIndex(_bountyId)
-    callNotStarted
-  {
+    uint256 _bountyId,
+    uint256 _amount
+  ) public payable senderIsValid(_sender) validateBountyArrayIndex(_bountyId) callNotStarted {
     require(_amount > 0); // Contributions of 0 tokens or token ID 0 should fail
 
-    bounties[_bountyId].contributions.push(
-      Contribution(_sender, _amount, false)); // Adds the contribution to the bounty
+    bounties[_bountyId].contributions.push(Contribution(_sender, _amount, false)); // Adds the contribution to the bounty
 
-    if (bounties[_bountyId].tokenVersion == 0){
-
+    if (bounties[_bountyId].tokenVersion == 0) {
       bounties[_bountyId].balance = bounties[_bountyId].balance.add(_amount); // Increments the balance of the bounty
 
       require(msg.value == _amount);
-    } else if (bounties[_bountyId].tokenVersion == 20){
-
+    } else if (bounties[_bountyId].tokenVersion == 20) {
       bounties[_bountyId].balance = bounties[_bountyId].balance.add(_amount); // Increments the balance of the bounty
 
       require(msg.value == 0); // Ensures users don't accidentally send ETH alongside a token contribution, locking up funds
-      require(ERC20Token(bounties[_bountyId].token).transferFrom(_sender,
-                                                                 address(this),
-                                                                 _amount));
-    } else if (bounties[_bountyId].tokenVersion == 721){
+      require(ERC20Token(bounties[_bountyId].token).transferFrom(_sender, address(this), _amount));
+    } else if (bounties[_bountyId].tokenVersion == 721) {
       tokenBalances[_bountyId][_amount] = true; // Adds the 721 token to the balance of the bounty
 
-
       require(msg.value == 0); // Ensures users don't accidentally send ETH alongside a token contribution, locking up funds
-      ERC721BasicToken(bounties[_bountyId].token).transferFrom(_sender,
-                                                               address(this),
-                                                               _amount);
+      ERC721BasicToken(bounties[_bountyId].token).transferFrom(_sender, address(this), _amount);
     } else {
       revert();
     }
 
-    emit ContributionAdded(_bountyId,
-                           bounties[_bountyId].contributions.length - 1, // The new contributionId
-                           _sender,
-                           _amount);
+    emit ContributionAdded(
+      _bountyId,
+      bounties[_bountyId].contributions.length - 1, // The new contributionId
+      _sender,
+      _amount
+    );
   }
 
   /// @dev refundContribution(): Allows users to refund the contributions they've
@@ -323,8 +286,9 @@ contract StandardBounties {
   /// @param _contributionId the index of the contribution being refunded
   function refundContribution(
     address _sender,
-    uint _bountyId,
-    uint _contributionId)
+    uint256 _bountyId,
+    uint256 _contributionId
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -351,13 +315,11 @@ contract StandardBounties {
   /// @param _contributionIds the array of indexes of the contributions being refunded
   function refundMyContributions(
     address _sender,
-    uint _bountyId,
-    uint[] memory _contributionIds)
-    public
-    senderIsValid(_sender)
-  {
-    for (uint i = 0; i < _contributionIds.length; i++){
-        refundContribution(_sender, _bountyId, _contributionIds[i]);
+    uint256 _bountyId,
+    uint256[] memory _contributionIds
+  ) public senderIsValid(_sender) {
+    for (uint256 i = 0; i < _contributionIds.length; i++) {
+      refundContribution(_sender, _bountyId, _contributionIds[i]);
     }
   }
 
@@ -368,16 +330,17 @@ contract StandardBounties {
   /// @param _contributionIds the array of indexes of the contributions being refunded
   function refundContributions(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint[] memory _contributionIds)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256[] memory _contributionIds
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
     onlyIssuer(_sender, _bountyId, _issuerId)
     callNotStarted
   {
-    for (uint i = 0; i < _contributionIds.length; i++){
+    for (uint256 i = 0; i < _contributionIds.length; i++) {
       require(_contributionIds[i] < bounties[_bountyId].contributions.length);
 
       Contribution storage contribution = bounties[_bountyId].contributions[_contributionIds[i]];
@@ -400,22 +363,23 @@ contract StandardBounties {
   /// @param _amounts an array of amounts of tokens to be sent. The length of the array should be 1 if the bounty is in ETH or ERC20 tokens. If it's an ERC721 bounty, the array should be the list of tokenIDs.
   function drainBounty(
     address payable _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint[] memory _amounts)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256[] memory _amounts
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
     onlyIssuer(_sender, _bountyId, _issuerId)
     callNotStarted
   {
-    if (bounties[_bountyId].tokenVersion == 0 || bounties[_bountyId].tokenVersion == 20){
+    if (bounties[_bountyId].tokenVersion == 0 || bounties[_bountyId].tokenVersion == 20) {
       require(_amounts.length == 1); // ensures there's only 1 amount of tokens to be returned
       require(_amounts[0] <= bounties[_bountyId].balance); // ensures an issuer doesn't try to drain the bounty of more tokens than their balance permits
       transferTokens(_bountyId, _sender, _amounts[0]); // Performs the draining of tokens to the issuer
     } else {
-      for (uint i = 0; i < _amounts.length; i++){
-        require(tokenBalances[_bountyId][_amounts[i]]);// ensures an issuer doesn't try to drain the bounty of a token it doesn't have in its balance
+      for (uint256 i = 0; i < _amounts.length; i++) {
+        require(tokenBalances[_bountyId][_amounts[i]]); // ensures an issuer doesn't try to drain the bounty of a token it doesn't have in its balance
         transferTokens(_bountyId, _sender, _amounts[i]);
       }
     }
@@ -430,12 +394,9 @@ contract StandardBounties {
   /// @param _data the IPFS hash corresponding to a JSON object which contains the details of the action being performed (see docs for schema details)
   function performAction(
     address _sender,
-    uint _bountyId,
-    string memory _data)
-    public
-    senderIsValid(_sender)
-    validateBountyArrayIndex(_bountyId)
-  {
+    uint256 _bountyId,
+    string memory _data
+  ) public senderIsValid(_sender) validateBountyArrayIndex(_bountyId) {
     emit ActionPerformed(_bountyId, _sender, _data); // The _data string is emitted in an event for easy off-chain consumption
   }
 
@@ -446,23 +407,22 @@ contract StandardBounties {
   /// @param _data the IPFS hash corresponding to a JSON object which contains the details of the submission (see docs for schema details)
   function fulfillBounty(
     address _sender,
-    uint _bountyId,
-    address payable[] memory  _fulfillers,
-    string memory _data)
-    public
-    senderIsValid(_sender)
-    validateBountyArrayIndex(_bountyId)
-  {
+    uint256 _bountyId,
+    address payable[] memory _fulfillers,
+    string memory _data
+  ) public senderIsValid(_sender) validateBountyArrayIndex(_bountyId) {
     require(now < bounties[_bountyId].deadline); // Submissions are only allowed to be made before the deadline
     require(_fulfillers.length > 0); // Submissions with no fulfillers would mean no one gets paid out
 
     bounties[_bountyId].fulfillments.push(Fulfillment(_fulfillers, _sender));
 
-    emit BountyFulfilled(_bountyId,
-                         (bounties[_bountyId].fulfillments.length - 1),
-                         _fulfillers,
-                         _data, // The _data string is emitted in an event for easy off-chain consumption
-                         _sender);
+    emit BountyFulfilled(
+      _bountyId,
+      (bounties[_bountyId].fulfillments.length - 1),
+      _fulfillers,
+      _data, // The _data string is emitted in an event for easy off-chain consumption
+      _sender
+    );
   }
 
   /// @dev updateFulfillment(): Allows the submitter of a fulfillment to update their submission
@@ -472,22 +432,20 @@ contract StandardBounties {
   /// @param _fulfillers the new array of addresses which will receive payouts for the submission
   /// @param _data the new IPFS hash corresponding to a JSON object which contains the details of the submission (see docs for schema details)
   function updateFulfillment(
-  address _sender,
-  uint _bountyId,
-  uint _fulfillmentId,
-  address payable[] memory _fulfillers,
-  string memory _data)
-  public
-  senderIsValid(_sender)
-  validateBountyArrayIndex(_bountyId)
-  validateFulfillmentArrayIndex(_bountyId, _fulfillmentId)
-  onlySubmitter(_sender, _bountyId, _fulfillmentId) // Only the original submitter of a fulfillment may update their submission
+    address _sender,
+    uint256 _bountyId,
+    uint256 _fulfillmentId,
+    address payable[] memory _fulfillers,
+    string memory _data
+  )
+    public
+    senderIsValid(_sender)
+    validateBountyArrayIndex(_bountyId)
+    validateFulfillmentArrayIndex(_bountyId, _fulfillmentId)
+    onlySubmitter(_sender, _bountyId, _fulfillmentId) // Only the original submitter of a fulfillment may update their submission
   {
     bounties[_bountyId].fulfillments[_fulfillmentId].fulfillers = _fulfillers;
-    emit FulfillmentUpdated(_bountyId,
-                            _fulfillmentId,
-                            _fulfillers,
-                            _data); // The _data string is emitted in an event for easy off-chain consumption
+    emit FulfillmentUpdated(_bountyId, _fulfillmentId, _fulfillers, _data); // The _data string is emitted in an event for easy off-chain consumption
   }
 
   /// @dev acceptFulfillment(): Allows any of the approvers to accept a given submission
@@ -502,10 +460,11 @@ contract StandardBounties {
   ///                      being sent to each of the individual fulfillers
   function acceptFulfillment(
     address _sender,
-    uint _bountyId,
-    uint _fulfillmentId,
-    uint _approverId,
-    uint[] memory _tokenAmounts)
+    uint256 _bountyId,
+    uint256 _fulfillmentId,
+    uint256 _approverId,
+    uint256[] memory _tokenAmounts
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -520,16 +479,13 @@ contract StandardBounties {
 
     require(_tokenAmounts.length == fulfillment.fulfillers.length); // Each fulfiller should get paid some amount of tokens (this can be 0)
 
-    for (uint256 i = 0; i < fulfillment.fulfillers.length; i++){
-        if (_tokenAmounts[i] > 0){
-          // for each fulfiller associated with the submission
-          transferTokens(_bountyId, fulfillment.fulfillers[i], _tokenAmounts[i]);
-        }
+    for (uint256 i = 0; i < fulfillment.fulfillers.length; i++) {
+      if (_tokenAmounts[i] > 0) {
+        // for each fulfiller associated with the submission
+        transferTokens(_bountyId, fulfillment.fulfillers[i], _tokenAmounts[i]);
+      }
     }
-    emit FulfillmentAccepted(_bountyId,
-                             _fulfillmentId,
-                             _sender,
-                             _tokenAmounts);
+    emit FulfillmentAccepted(_bountyId, _fulfillmentId, _sender, _tokenAmounts);
   }
 
   /// @dev fulfillAndAccept(): Allows any of the approvers to fulfill and accept a submission simultaneously
@@ -545,26 +501,24 @@ contract StandardBounties {
   ///                      being sent to each of the individual fulfillers
   function fulfillAndAccept(
     address _sender,
-    uint _bountyId,
+    uint256 _bountyId,
     address payable[] memory _fulfillers,
     string memory _data,
-    uint _approverId,
-    uint[] memory _tokenAmounts)
-    public
-    senderIsValid(_sender)
-  {
+    uint256 _approverId,
+    uint256[] memory _tokenAmounts
+  ) public senderIsValid(_sender) {
     // first fulfills the bounty on behalf of the fulfillers
     fulfillBounty(_sender, _bountyId, _fulfillers, _data);
 
     // then accepts the fulfillment
-    acceptFulfillment(_sender,
-                      _bountyId,
-                      bounties[_bountyId].fulfillments.length - 1,
-                      _approverId,
-                      _tokenAmounts);
+    acceptFulfillment(
+      _sender,
+      _bountyId,
+      bounties[_bountyId].fulfillments.length - 1,
+      _approverId,
+      _tokenAmounts
+    );
   }
-
-
 
   /// @dev changeBounty(): Allows any of the issuers to change the bounty
   /// @param _sender the sender of the transaction issuing the bounty (should be the same as msg.sender unless the txn is called by the meta tx relayer)
@@ -576,15 +530,13 @@ contract StandardBounties {
   /// @param _deadline the new timestamp which will become the deadline of the bounty
   function changeBounty(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
+    uint256 _bountyId,
+    uint256 _issuerId,
     address payable[] memory _issuers,
     address payable[] memory _approvers,
     string memory _data,
-    uint _deadline)
-    public
-    senderIsValid(_sender)
-  {
+    uint256 _deadline
+  ) public senderIsValid(_sender) {
     require(_bountyId < numBounties); // makes the validateBountyArrayIndex modifier in-line to avoid stack too deep errors
     require(_issuerId < bounties[_bountyId].issuers.length); // makes the validateIssuerArrayIndex modifier in-line to avoid stack too deep errors
     require(_sender == bounties[_bountyId].issuers[_issuerId]); // makes the onlyIssuer modifier in-line to avoid stack too deep errors
@@ -594,12 +546,7 @@ contract StandardBounties {
     bounties[_bountyId].issuers = _issuers;
     bounties[_bountyId].approvers = _approvers;
     bounties[_bountyId].deadline = _deadline;
-    emit BountyChanged(_bountyId,
-                       _sender,
-                       _issuers,
-                       _approvers,
-                       _data,
-                       _deadline);
+    emit BountyChanged(_bountyId, _sender, _issuers, _approvers, _data, _deadline);
   }
 
   /// @dev changeIssuer(): Allows any of the issuers to change a particular issuer of the bounty
@@ -610,10 +557,11 @@ contract StandardBounties {
   /// @param _newIssuer the address of the new issuer
   function changeIssuer(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint _issuerIdToChange,
-    address payable _newIssuer)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256 _issuerIdToChange,
+    address payable _newIssuer
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -635,10 +583,11 @@ contract StandardBounties {
   /// @param _approver the address of the new approver
   function changeApprover(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint _approverId,
-    address payable _approver)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256 _approverId,
+    address payable _approver
+  )
     external
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -659,15 +608,12 @@ contract StandardBounties {
   /// @param _issuer the address of the new approver
   function changeIssuerAndApprover(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint _issuerIdToChange,
-    uint _approverIdToChange,
-    address payable _issuer)
-    external
-    senderIsValid(_sender)
-    onlyIssuer(_sender, _bountyId, _issuerId)
-  {
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256 _issuerIdToChange,
+    uint256 _approverIdToChange,
+    address payable _issuer
+  ) external senderIsValid(_sender) onlyIssuer(_sender, _bountyId, _issuerId) {
     require(_bountyId < numBounties);
     require(_approverIdToChange < bounties[_bountyId].approvers.length);
     require(_issuerIdToChange < bounties[_bountyId].issuers.length);
@@ -686,9 +632,10 @@ contract StandardBounties {
   /// @param _data the new IPFS hash representing the JSON object storing the details of the bounty (see docs for schema details)
   function changeData(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    string memory _data)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    string memory _data
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -705,9 +652,10 @@ contract StandardBounties {
   /// @param _deadline the new timestamp which will become the deadline of the bounty
   function changeDeadline(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    uint _deadline)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    uint256 _deadline
+  )
     external
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
@@ -726,16 +674,17 @@ contract StandardBounties {
   /// @param _issuers the array of addresses to add to the list of valid issuers
   function addIssuers(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    address payable[] memory _issuers)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    address payable[] memory _issuers
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
     validateIssuerArrayIndex(_bountyId, _issuerId)
     onlyIssuer(_sender, _bountyId, _issuerId)
   {
-    for (uint i = 0; i < _issuers.length; i++){
+    for (uint256 i = 0; i < _issuers.length; i++) {
       bounties[_bountyId].issuers.push(_issuers[i]);
     }
 
@@ -749,16 +698,17 @@ contract StandardBounties {
   /// @param _approvers the array of addresses to add to the list of valid approvers
   function addApprovers(
     address _sender,
-    uint _bountyId,
-    uint _issuerId,
-    address[] memory _approvers)
+    uint256 _bountyId,
+    uint256 _issuerId,
+    address[] memory _approvers
+  )
     public
     senderIsValid(_sender)
     validateBountyArrayIndex(_bountyId)
     validateIssuerArrayIndex(_bountyId, _issuerId)
     onlyIssuer(_sender, _bountyId, _issuerId)
   {
-    for (uint i = 0; i < _approvers.length; i++){
+    for (uint256 i = 0; i < _approvers.length; i++) {
       bounties[_bountyId].approvers.push(_approvers[i]);
     }
 
@@ -768,40 +718,35 @@ contract StandardBounties {
   /// @dev getBounty(): Returns the details of the bounty
   /// @param _bountyId the index of the bounty
   /// @return Returns a tuple for the bounty
-  function getBounty(uint _bountyId)
-    external
-    view
-    returns (Bounty memory)
-  {
+  function getBounty(uint256 _bountyId) external view returns (Bounty memory) {
     return bounties[_bountyId];
   }
 
-
-  function transferTokens(uint _bountyId, address payable _to, uint _amount)
-    internal
-  {
-    if (bounties[_bountyId].tokenVersion == 0){
+  function transferTokens(
+    uint256 _bountyId,
+    address payable _to,
+    uint256 _amount
+  ) internal {
+    if (bounties[_bountyId].tokenVersion == 0) {
       require(_amount > 0); // Sending 0 tokens should throw
       require(bounties[_bountyId].balance >= _amount);
 
       bounties[_bountyId].balance = bounties[_bountyId].balance.sub(_amount);
 
       _to.transfer(_amount);
-    } else if (bounties[_bountyId].tokenVersion == 20){
+    } else if (bounties[_bountyId].tokenVersion == 20) {
       require(_amount > 0); // Sending 0 tokens should throw
       require(bounties[_bountyId].balance >= _amount);
 
       bounties[_bountyId].balance = bounties[_bountyId].balance.sub(_amount);
 
       require(ERC20Token(bounties[_bountyId].token).transfer(_to, _amount));
-    } else if (bounties[_bountyId].tokenVersion == 721){
+    } else if (bounties[_bountyId].tokenVersion == 721) {
       require(tokenBalances[_bountyId][_amount]);
 
       tokenBalances[_bountyId][_amount] = false; // Removes the 721 token from the balance of the bounty
 
-      ERC721BasicToken(bounties[_bountyId].token).transferFrom(address(this),
-                                                               _to,
-                                                               _amount);
+      ERC721BasicToken(bounties[_bountyId].token).transferFrom(address(this), _to, _amount);
     } else {
       revert();
     }
@@ -811,18 +756,55 @@ contract StandardBounties {
    * Events
    */
 
-  event BountyIssued(uint _bountyId, address payable _creator, address payable[] _issuers, address[] _approvers, string _data, uint _deadline, address _token, uint _tokenVersion);
-  event ContributionAdded(uint _bountyId, uint _contributionId, address payable _contributor, uint _amount);
-  event ContributionRefunded(uint _bountyId, uint _contributionId);
-  event ContributionsRefunded(uint _bountyId, address _issuer, uint[] _contributionIds);
-  event BountyDrained(uint _bountyId, address _issuer, uint[] _amounts);
-  event ActionPerformed(uint _bountyId, address _fulfiller, string _data);
-  event BountyFulfilled(uint _bountyId, uint _fulfillmentId, address payable[] _fulfillers, string _data, address _submitter);
-  event FulfillmentUpdated(uint _bountyId, uint _fulfillmentId, address payable[] _fulfillers, string _data);
-  event FulfillmentAccepted(uint _bountyId, uint  _fulfillmentId, address _approver, uint[] _tokenAmounts);
-  event BountyChanged(uint _bountyId, address _changer, address payable[] _issuers, address payable[] _approvers, string _data, uint _deadline);
-  event BountyIssuersUpdated(uint _bountyId, address _changer, address payable[] _issuers);
-  event BountyApproversUpdated(uint _bountyId, address _changer, address[] _approvers);
-  event BountyDataChanged(uint _bountyId, address _changer, string _data);
-  event BountyDeadlineChanged(uint _bountyId, address _changer, uint _deadline);
+  event BountyIssued(
+    uint256 _bountyId,
+    address payable _creator,
+    address payable[] _issuers,
+    address[] _approvers,
+    string _data,
+    uint256 _deadline,
+    address _token,
+    uint256 _tokenVersion
+  );
+  event ContributionAdded(
+    uint256 _bountyId,
+    uint256 _contributionId,
+    address payable _contributor,
+    uint256 _amount
+  );
+  event ContributionRefunded(uint256 _bountyId, uint256 _contributionId);
+  event ContributionsRefunded(uint256 _bountyId, address _issuer, uint256[] _contributionIds);
+  event BountyDrained(uint256 _bountyId, address _issuer, uint256[] _amounts);
+  event ActionPerformed(uint256 _bountyId, address _fulfiller, string _data);
+  event BountyFulfilled(
+    uint256 _bountyId,
+    uint256 _fulfillmentId,
+    address payable[] _fulfillers,
+    string _data,
+    address _submitter
+  );
+  event FulfillmentUpdated(
+    uint256 _bountyId,
+    uint256 _fulfillmentId,
+    address payable[] _fulfillers,
+    string _data
+  );
+  event FulfillmentAccepted(
+    uint256 _bountyId,
+    uint256 _fulfillmentId,
+    address _approver,
+    uint256[] _tokenAmounts
+  );
+  event BountyChanged(
+    uint256 _bountyId,
+    address _changer,
+    address payable[] _issuers,
+    address payable[] _approvers,
+    string _data,
+    uint256 _deadline
+  );
+  event BountyIssuersUpdated(uint256 _bountyId, address _changer, address payable[] _issuers);
+  event BountyApproversUpdated(uint256 _bountyId, address _changer, address[] _approvers);
+  event BountyDataChanged(uint256 _bountyId, address _changer, string _data);
+  event BountyDeadlineChanged(uint256 _bountyId, address _changer, uint256 _deadline);
 }
