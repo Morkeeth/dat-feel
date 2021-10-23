@@ -1,7 +1,8 @@
 import { JsonRpcSigner, JsonRpcProvider, Web3Provider } from '@ethersproject/providers'
 import { useWallet, getProviderFromUseWalletId } from 'use-wallet'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { defaultNetwork } from './web3-config'
+import { web3Store } from '../stores/web3Store'
 
 type UseWeb3Value = {
   account?: string | null | undefined
@@ -23,6 +24,14 @@ const useWeb3 = (): UseWeb3Value => {
     () => _web3ReactContext?.library && new Web3Provider(_web3ReactContext?.library).getSigner(),
     [_web3ReactContext?.library]
   )
+
+  useEffect(() => {
+    web3Store.provider = provider
+    web3Store.signer = signer
+    web3Store.chainId = chainId as number
+    web3Store.contractOwner = account as string
+    web3Store.account = account as string
+  }, [signer, provider, chainId, account])
 
   return {
     account,

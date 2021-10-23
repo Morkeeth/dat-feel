@@ -16,7 +16,6 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
 
   const reset = () => {}
 
-  console.log(proposal)
   const submit = (e: any) => {
     if (isCreating) {
       return
@@ -26,7 +25,8 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
       title: proposal.title,
       body,
       level,
-      proposalLink: 'http://link.com',
+      proposalUrl: 'http://link.com',
+      compansation,
     }
     createTask(data)
 
