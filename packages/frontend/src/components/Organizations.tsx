@@ -25,9 +25,6 @@ const Organizations: FC = () => {
       <Grid.Container gap={3}>
         {orgz?.map((org) => (
           <Grid key={org.name}>
-            <Text style={{ margin: 0 }} type="secondary">
-              {org.name}
-            </Text>
             <Logo>
               <Link href={`/dao/${org.url}`} passHref>
                 <a>
@@ -35,6 +32,10 @@ const Organizations: FC = () => {
                 </a>
               </Link>
             </Logo>
+            <Spacer h={1} />
+            <Text style={{ margin: 0, textAlign: 'center' }} type="secondary">
+              {org.name}
+            </Text>
           </Grid>
         ))}
       </Grid.Container>

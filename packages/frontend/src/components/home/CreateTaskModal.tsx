@@ -3,7 +3,6 @@ import { FC } from 'react'
 import { useModal, Button, Modal, Input, Grid, Textarea, useInput, Select } from '@geist-ui/react'
 import { observer } from 'mobx-react-lite'
 import { GovernanceProposal } from '../../types'
-import { useTasksContext } from '../../contexts/TasksContext'
 import useCreateTask from '../../hooks/useCreateTask'
 
 type Props = { proposal: GovernanceProposal; close: () => void }
@@ -44,10 +43,10 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
           <form onSubmit={submit}>
             <Grid.Container gap={2}>
               <Grid xs={24}>
-                <Input width="100%" placeholder="Title" value={proposal.title} />
+                <Input width="100%" placeholder="Title" value={proposal.title} disabled />
               </Grid>
               <Grid xs={24}>
-                <Textarea width="100%" placeholder="Description" {...descriptionBindings} />
+                <Textarea width="100%" placeholder="Description" disabled={proposal.description} />
               </Grid>
               <Grid xs={24}>
                 <Input
@@ -83,8 +82,8 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
                 />
               </Grid>
 
-              <Grid>
-                <Button loading={isCreating} htmlType="submit">
+              <Grid xs={24}>
+                <Button loading={isCreating} width="100%" htmlType="submit">
                   submit
                 </Button>
               </Grid>

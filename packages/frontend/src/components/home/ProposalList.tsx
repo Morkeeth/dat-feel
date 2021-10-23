@@ -2,6 +2,7 @@ import { Grid, Spinner, Text, Card, Radio, Spacer } from '@geist-ui/react'
 import * as React from 'react'
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
+import Markdown from 'markdown-to-jsx'
 import CreateTaskModal from './CreateTaskModal'
 import { proposalStore } from '../../stores/proposalStore'
 import { formatAddressToShort } from '../../utils/formatters'
@@ -29,9 +30,11 @@ const ProposalList: FC<Props> = ({ close }) => {
           {data?.map((item) => (
             <Grid key={item.id} xs={8}>
               <Card width="100%">
-                <Text h3>{item.title}</Text>
+                <Markdown>{item.title}</Markdown>
                 <div>
-                  <Text h6>Proposer: {formatAddressToShort(item.proposer.address)}</Text>
+                  <Text type="secondary" h6>
+                    Proposer: {formatAddressToShort(item.proposer.address)}
+                  </Text>
                   <CreateTaskModal close={close} proposal={item} />
                 </div>
               </Card>

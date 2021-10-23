@@ -6,23 +6,6 @@ import { Task, User, OrgMetaData } from '../types'
 
 export const getTask = async (taskId: string): Promise<Task> => {
   return {}
-  return {
-    approvers: ['0x1', '0x2'],
-    id: '0xabc',
-    status: TaskStatus.OPEN,
-    creator: '0xabc',
-    deadline: BigNumber.from(2025),
-    issuers: ['0x3', '0x4'],
-    token: '0xORK',
-    _tokenVersion: BigNumber.from(2025),
-    amount: BigNumber.from(8000),
-    contributationId: BigNumber.from(5000),
-    data: {
-      title: 'Generic task',
-      body: 'Lorem ipsum',
-      proposalUrl: 'google.com',
-    },
-  }
 }
 
 export const getDAO = async (org: { url: string }): Promise<OrgMetaData> => {

@@ -1,4 +1,5 @@
 import { request, gql } from 'graphql-request'
+import { markdown } from 'markdown'
 import { GovernanceProposal, GovernanceProposalSource } from '../types'
 
 const tallyQuery = gql`
@@ -55,15 +56,19 @@ export const getProposals = async (
   const response = await request(url, query)
 
   if (source === 'tally') {
-    return response.proposals.map((item: any) => ({
-      id: item.id,
-      title: item.data.description,
-      date: new Date(Number(item.data.timestamp) * 1000),
-      link: `https://www.withtally.com/governance/compound/proposal/${item.data.proposalId}`,
-      proposer: {
-        address: item.proposer.id,
-      },
-    }))
+    return response.proposals.map((item: any) => {
+      const result = markdown(item.data.description)
+      console.log(result)
+      return {
+        id: item.id,
+        title: item.data.description,
+        date: new Date(Number(item.data.timestamp) * 1000),
+        link: `https://www.withtally.com/governance/compound/proposal/${item.data.proposalId}`,
+        proposer: {
+          address: item.proposer.id,
+        },
+      }
+    })
   }
 
   return response.proposals.map((item: any) => ({
