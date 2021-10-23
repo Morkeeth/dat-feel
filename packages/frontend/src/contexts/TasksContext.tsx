@@ -19,10 +19,19 @@ export const TasksContextProvider: FC = ({ children }) => {
   const createTask = async (args: TaskCreationDataArgs) => {
     setIsCreating(true)
     const { title, body } = args
+
     console.log({ title, body })
+    // const data = JSON.stringify({
+    //   title,
+    //   body,
+    // })
+
     const data = JSON.stringify({
-      title,
-      body,
+      name: 'DXdao',
+      logo: 'https://pbs.twimg.com/profile_images/1165560108744683520/xiLGl9-f_400x400.png',
+      header: 'https://pbs.twimg.com/profile_banners/1165559841290694656/1605604709/1500x500',
+      discord: 'https://discord.com/invite/4QXEJQkvHH',
+      twitter: 'https://dxdao.eth.link/twitter_color.svg',
     })
 
     try {

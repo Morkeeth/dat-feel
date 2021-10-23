@@ -23,3 +23,11 @@ export type TaskCreationDataArgs = {
   level?: string
   compansation: string
 }
+
+export type OrgMetaData = {
+  name: string
+  logo: string
+  header: string
+  discord: string
+  twitter: string
+}

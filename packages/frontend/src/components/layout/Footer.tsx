@@ -1,15 +1,12 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Page, Spacer, Toggle } from '@geist-ui/react'
-import { useUiContext } from '../../contexts/UiContext'
+import { Page, Spacer } from '@geist-ui/react'
+import ThemeToggle from '../ThemeToggle'
 
-type Props = {}
-
-const Footer: FC<Props> = () => {
-  const { isDarkTheme, toggleTheme } = useUiContext()
+const Footer: FC = () => {
   return (
     <Page.Footer>
-      <Toggle type="secondary" checked={isDarkTheme} onChange={() => toggleTheme()} />
+      <ThemeToggle />
       <Spacer h={2} />
     </Page.Footer>
   )
