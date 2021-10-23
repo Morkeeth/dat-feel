@@ -9,6 +9,7 @@ import { Task } from '../../types'
 import GradientText from '../GradientText'
 import { formatBigNumber } from '../../utils/formatters'
 import Countup from '../Countup'
+import TaskAction from '../home/TaskAction'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const TaskCard: FC<{ task: Task }> = ({ task }) => {
         </TopWrapper>
         <StyledTitle h4>{task.data?.title}</StyledTitle>
         <Text>{task.data?.body}</Text>
+        <TaskAction task={task} />
       </StyledCard>
     </Link>
   )
