@@ -1,18 +1,11 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Text } from '@geist-ui/react'
+import Markdown from 'markdown-to-jsx'
 import { useUserContext } from '../../contexts/UserContext'
 
 const PortfolioExperience: FC = () => {
   const { user } = useUserContext()
-  return (
-    <Text mt={0}>
-      Turning coffee into code{' '}
-      <span role="img" aria-label="farmer">
-        👨‍🌾
-      </span>
-    </Text>
-  )
+  return <Markdown>{user.bio}</Markdown>
 }
 
 export default PortfolioExperience

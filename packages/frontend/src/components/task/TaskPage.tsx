@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { Text } from '@geist-ui/react'
 import TaskHeader from './TaskHeader'
 import TaskContact from './TaskContact'
+import TaskDescription from './TaskDescription'
 import { useTaskContext } from '../../contexts/TaskContext'
 
 const TaskPage: FC = () => {
@@ -11,7 +12,7 @@ const TaskPage: FC = () => {
   return (
     <div>
       <TaskHeader task={task} />
-      <Text p>{task.description}</Text>
+      <TaskDescription bioContent={task.description} />
       <TaskContact validator={task.taskValidator} />
     </div>
   )

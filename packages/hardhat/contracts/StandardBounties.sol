@@ -36,9 +36,19 @@ contract StandardBounties {
   }
 
   struct Contribution {
+<<<<<<< HEAD
     address payable contributor; // The address of the individual who contributed
+=======
+    User contributor; // The address of the individual who contributed
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     uint256 amount; // The amount of tokens the user contributed
     bool refunded; // A boolean storing whether or not the contribution has been refunded yet
+  }
+
+  struct User {
+    address payable user_address; // The address of the individual who contributed
+    uint256 xp; // The experience points earned
+    bool isValid; // Helper property to know if the user exists on the map
   }
 
   /*
@@ -53,6 +63,8 @@ contract StandardBounties {
   address public metaTxRelayer; // The address of the meta transaction relayer whose _sender is automatically trusted for all contract calls
 
   bool public callStarted; // Ensures mutex for the entire contract
+
+  mapping(address => User) public users; // A mapping of userAddresses
 
   /*
    * Modifiers
@@ -95,7 +107,11 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _issuerId
   ) {
+<<<<<<< HEAD
     require(_sender == bounties[_bountyId].issuers[_issuerId], 'only issuer');
+=======
+    require(_sender == bounties[_bountyId].issuers[_issuerId]);
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     _;
   }
 
@@ -113,7 +129,11 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _contributionId
   ) {
+<<<<<<< HEAD
     require(_sender == bounties[_bountyId].contributions[_contributionId].contributor);
+=======
+    require(_sender == bounties[_bountyId].contributions[_contributionId].contributor.user_address);
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     _;
   }
 
@@ -250,8 +270,21 @@ contract StandardBounties {
   ) public payable senderIsValid(_sender) validateBountyArrayIndex(_bountyId) callNotStarted {
     require(_amount > 0); // Contributions of 0 tokens or token ID 0 should fail
 
+<<<<<<< HEAD
     bounties[_bountyId].contributions.push(Contribution(_sender, _amount, false)); // Adds the contribution to the bounty
 
+=======
+    User storage contributor = users[_sender];
+
+    // If user deesn't exist, then register it
+    if (!users[_sender].isValid) {
+      users[_sender] = User(_sender, 0, true); // Initial xp value of the user will be 0
+      contributor = users[_sender];
+    }
+
+    bounties[_bountyId].contributions.push(Contribution(contributor, _amount, false)); // Adds the contribution to the bounty
+
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     if (bounties[_bountyId].tokenVersion == 0) {
       bounties[_bountyId].balance = bounties[_bountyId].balance.add(_amount); // Increments the balance of the bounty
 
@@ -304,7 +337,7 @@ contract StandardBounties {
 
     contribution.refunded = true;
 
-    transferTokens(_bountyId, contribution.contributor, contribution.amount); // Performs the disbursal of tokens to the contributor
+    transferTokens(_bountyId, contribution.contributor.user_address, contribution.amount); // Performs the disbursal of tokens to the contributor
 
     emit ContributionRefunded(_bountyId, _contributionId);
   }
@@ -349,7 +382,7 @@ contract StandardBounties {
 
       contribution.refunded = true;
 
-      transferTokens(_bountyId, contribution.contributor, contribution.amount); // Performs the disbursal of tokens to the contributor
+      transferTokens(_bountyId, contribution.contributor.user_address, contribution.amount); // Performs the disbursal of tokens to the contributor
     }
 
     emit ContributionsRefunded(_bountyId, _sender, _contributionIds);
@@ -483,6 +516,13 @@ contract StandardBounties {
       if (_tokenAmounts[i] > 0) {
         // for each fulfiller associated with the submission
         transferTokens(_bountyId, fulfillment.fulfillers[i], _tokenAmounts[i]);
+<<<<<<< HEAD
+=======
+        // increase the xp. Amount * 10
+        users[fulfillment.fulfillers[i]].xp = users[fulfillment.fulfillers[i]].xp.add(
+          _tokenAmounts[i] * 10
+        );
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
       }
     }
     emit FulfillmentAccepted(_bountyId, _fulfillmentId, _sender, _tokenAmounts);
@@ -722,6 +762,16 @@ contract StandardBounties {
     return bounties[_bountyId];
   }
 
+<<<<<<< HEAD
+=======
+  // @dev getUser(): Returns the details of a user
+  /// @param _userAddress the user address
+  /// @return Returns a tuple for the User
+  function getUser(address _userAddress) external view returns (User memory) {
+    return users[_userAddress];
+  }
+
+>>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
   function transferTokens(
     uint256 _bountyId,
     address payable _to,

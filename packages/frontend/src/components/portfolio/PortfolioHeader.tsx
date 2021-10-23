@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { CheckInCircle } from '@geist-ui/react-icons'
 import { Text, Spacer, Avatar } from '@geist-ui/react'
 import { useUserContext } from '../../contexts/UserContext'
+import { formatAddressToShort } from '../../utils/formatters'
+import Countup from '../Countup'
 
 const StyledAvatar = styled(Avatar)`
   width: 120px !important;
@@ -34,10 +36,10 @@ const PortfolioHeader: FC = () => {
       <AvatarWrapper>
         <StyledAvatar src="https://unix.bio/assets/avatar.png" text={user.id[0].toUpperCase()} />
         <Title h2>
-          {user.id} <VerifiedIcon size={20} />
+          {formatAddressToShort(user.id)} <VerifiedIcon size={20} />
         </Title>
         <SubTitle p type="secondary">
-          {user.xp} experience • Joined {user.completedTasks[0].completedAt}
+          {user.xp} experience
         </SubTitle>
       </AvatarWrapper>
       <Spacer h={2} />

@@ -7,6 +7,7 @@ import TaskAction from './TaskAction'
 import TaskEntity from '../../stores/entities/TaskEntity'
 import StatusDot from '../StatusDot'
 import { TaskStatus } from '../../config/enums'
+import TaskCard from '../task/TaskCard'
 
 type Props = {
   tasks: TaskEntity[]
@@ -17,6 +18,7 @@ const TasksList: FC<Props> = ({ tasks }) => {
     <Grid.Container gap={3}>
       {tasks.map((task) => (
         <Grid key={task.id} direction="column">
+          <TaskCard task={task} />
           <Card width="100%">
             <div>Title: {task.data?.title}</div>
             <div>Description: {task.data?.body}</div>

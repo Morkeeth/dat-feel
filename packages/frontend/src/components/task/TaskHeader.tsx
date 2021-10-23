@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Text, Badge, Button } from '@geist-ui/react'
+import { Text, Button, Spacer } from '@geist-ui/react'
+import { Briefcase } from '@geist-ui/react-icons'
 import styled from 'styled-components'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
@@ -15,27 +16,49 @@ const TopWrapper = styled.div`
   justify-content: space-between;
 `
 
-const TaskPage: FC<Task> = ({ task }) => {
+const FlexWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`
+
+const UnderTitle = styled(Text)`
+  margin-block: 0;
+  margin-right: 6px;
+`
+
+const TaskHeader: FC<Task> = ({ task }) => {
   return (
     <div>
       <TopWrapper>
         <div>
-          <Badge>{task.organization}</Badge>
-          <StyledTitle h2>
-            {task.title}
-            <Text span type="secondary">
-              {' '}
-              ${task.price}
-            </Text>
-          </StyledTitle>
+          <TaskStatus status={task.status} />
+          <StyledTitle h2>{task.title}</StyledTitle>
         </div>
-        <Button auto ghost type="success">
-          Apply
-        </Button>
+        <div>
+          <GradientText
+            b
+            style={{ marginRight: '10px' }}
+            fromColor="rgb(255, 159, 225)"
+            toColor="rgb(135, 39, 255)"
+          >
+            ${task.price}
+          </GradientText>
+          <Button auto ghost type="success">
+            Apply
+          </Button>
+        </div>
       </TopWrapper>
-      <TaskStatus status={task.status} />
+      <FlexWrapper>
+        <UnderTitle>
+          <Briefcase size={12} /> {task.organization}
+        </UnderTitle>
+        <Text style={{ margin: 0 }} type="secondary">
+          • Created at {task.createdAt}
+        </Text>
+      </FlexWrapper>
+      <Spacer h={2} />
     </div>
   )
 }
 
-export default TaskPage
+export default TaskHeader
