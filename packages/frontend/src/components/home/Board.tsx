@@ -23,7 +23,7 @@ const Board: FC<Props> = ({ owner }) => {
 
   return (
     <>
-      <Text h2>Latest tasks</Text>
+      <Text h2>Current tasks</Text>
       <Grid.Container>
         <Grid xs={8} direction="column">
           <Text h3>Open</Text>

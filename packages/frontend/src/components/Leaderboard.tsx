@@ -1,4 +1,5 @@
-import { Spinner } from '@geist-ui/react'
+import { Spacer, Spinner, Table, Text } from '@geist-ui/react'
+import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { FC } from 'react'
 import useTasks from '../hooks/useTasks'
@@ -14,8 +15,20 @@ const Leaderboard: FC<Props> = ({ owner }) => {
     return <Spinner />
   }
 
-  console.log({ users })
-  return <div />
+  if (users.length === 0) {
+    return null
+  }
+
+  return (
+    <>
+      <Text h2>Leaderboard</Text>
+      <Table data={users}>
+        <Table.Column prop="userAddress" label="User Address" />
+        <Table.Column prop="xp" label="Experience Points" />
+      </Table>
+      <Spacer h={4} />
+    </>
+  )
 }
 
-export default Leaderboard
+export default observer(Leaderboard)

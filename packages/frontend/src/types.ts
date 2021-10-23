@@ -60,4 +60,7 @@ export type OrgMetaData = {
   twitter: string
   owner: string
   url: string
+  contributors: number
+  tvl: string
+  tasks: number
 }

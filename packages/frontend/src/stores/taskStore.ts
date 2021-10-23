@@ -7,6 +7,7 @@ import { getAddressFromDeployment } from '../utils/address'
 import { ipfsClient } from '../utils/ipfs'
 import { TaskCreationDataArgs } from '../types'
 import { TaskStatus } from '../config/enums'
+import { formatBigNumber } from '../utils/formatters'
 
 type Store = {
   tasks: TaskEntity[]
@@ -18,8 +19,6 @@ type Store = {
   createTask: (args: TaskCreationDataArgs) => Promise<any>
   fetchUsers: () => void
 }
-
-type UserAddedEvent = StandardBounties['filters']['UserAdded']
 
 export const taskStore = makeAutoObservable<Store>({
   tasks: [],
@@ -80,8 +79,18 @@ export const taskStore = makeAutoObservable<Store>({
 
     const users = await contract.queryFilter('UserAdded', 0, 'latest')
 
+    const normalizedUsers = users
+      .map(({ args }) => {
+        const [userAddress, xp] = args
+        return {
+          userAddress,
+          xp: `${Math.floor(parseFloat(formatBigNumber(xp)))}`,
+        }
+      })
+      .sort((userA, userB) => (userB.xp > userA.xp ? 1 : -1))
+
     runInAction(() => {
-      taskStore.users = users
+      taskStore.users = normalizedUsers
     })
   },
 
