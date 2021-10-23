@@ -24,6 +24,7 @@ const mnemonic = (): string => {
         chalk.cyan(`yarn run account`)
     )
     // process.exit(1)
+    return ''
   }
 }
 
