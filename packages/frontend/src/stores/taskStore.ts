@@ -1,14 +1,14 @@
 import { makeAutoObservable } from 'mobx'
-import { GovernanceProposalSource } from '../types'
+import TaskEntity from './entities/TaskEntity'
 
 type Store = {
-  governanceSource: GovernanceProposalSource
-  setSource: (source: GovernanceProposalSource) => void
+  tasks: TaskEntity[]
+  setTasks: (tasks: TaskEntity[]) => void
 }
 
-export const proposalStore = makeAutoObservable<Store>({
-  governanceSource: 'tally',
-  setSource: (source: GovernanceProposalSource) => {
-    proposalStore.governanceSource = source
+export const taskStore = makeAutoObservable<Store>({
+  tasks: [],
+  setTasks: (tasks: TaskEntity[]) => {
+    taskStore.tasks = tasks
   },
 })

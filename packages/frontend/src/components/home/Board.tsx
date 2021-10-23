@@ -2,7 +2,9 @@ import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
 import Trello from 'react-trello'
-import { useTheme } from '@geist-ui/react'
+import { Card, Spinner, useTheme } from '@geist-ui/react'
+import { ethers } from 'ethers'
+import useTasks from '../../hooks/useTasks'
 
 const data = {
   lanes: [
@@ -54,7 +56,27 @@ const StyledBoard = styled(Trello)`
 `
 
 const Board: FC = () => {
+  const { tasks, loading } = useTasks()
+
+  console.log({ tasks, loading })
   const theme = useTheme()
+
+  if (loading) {
+    return <Spinner />
+  }
+
+  return (
+    <div>
+      {tasks.map((task) => (
+        <Card key={task.id}>
+          Bounty id: {ethers.utils.formatEther(task.id)}
+          <div>Title: {task.data?.title}</div>
+          <div>Description: {task.data?.body}</div>
+          <div>proposalUrl: {task.data?.proposalUrl}</div>
+        </Card>
+      ))}
+    </div>
+  )
 
   return <StyledBoard data={data} />
 }

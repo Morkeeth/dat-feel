@@ -1,13 +1,21 @@
 /* This context can be removed once all subpages are using the store directly instead of props */
 
-import React, { createContext, FC, useContext, useState } from 'react'
+import React, { createContext, FC, useContext, useEffect, useState } from 'react'
 import { useToasts } from '@geist-ui/react'
+import { BigNumber } from '@ethersproject/bignumber'
+import { ethers } from 'ethers'
 import { TaskCreationDataArgs } from '../types'
 import { ipfsClient } from '../utils/ipfs'
+import { StandardBounties__factory } from '../generated/types'
+import useAddress from '../web3/useAddress'
+import useWeb3 from '../web3/useWeb3'
+import TaskEntity from '../stores/entities/TaskEntity'
 
 type TasksContextType = {
   isCreating: boolean
   createTask: (args: TaskCreationDataArgs) => Promise<void>
+  tasks: TaskEntity[]
+  isFetching: boolean
 }
 
 const TasksContext = createContext<TasksContextType>({} as TasksContextType)
@@ -15,29 +23,51 @@ const TasksContext = createContext<TasksContextType>({} as TasksContextType)
 export const TasksContextProvider: FC = ({ children }) => {
   const [, setToast] = useToasts()
   const [isCreating, setIsCreating] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
+  const [tasks, setTasks] = useState<TaskEntity[]>([])
+  const address = useAddress('StandardBounties')
+  const { provider, account, signer } = useWeb3()
+
+  const loadTasks = async () => {
+    setIsFetching(true)
+    const contract = StandardBounties__factory.connect(address, provider)
+    const bounties = await contract.queryFilter('BountyIssued', 0, 'latest')
+
+    const _tasks = bounties.map((bountyEvent) => new TaskEntity(bountyEvent))
+    setTasks(_tasks)
+    setIsFetching(false)
+  }
+
+  useEffect(() => {
+    loadTasks()
+  }, [])
 
   const createTask = async (args: TaskCreationDataArgs) => {
     setIsCreating(true)
-    const { title, body } = args
+    const { title, body, proposalUrl, compansation } = args
 
-    console.log({ title, body })
-    // const data = JSON.stringify({
-    //   title,
-    //   body,
-    // })
-
-    const data = JSON.stringify({
-      name: 'DXdao',
-      logo: 'https://pbs.twimg.com/profile_images/1165560108744683520/xiLGl9-f_400x400.png',
-      header: 'https://pbs.twimg.com/profile_banners/1165559841290694656/1605604709/1500x500',
-      discord: 'https://discord.com/invite/4QXEJQkvHH',
-      twitter: 'https://dxdao.eth.link/twitter_color.svg',
-    })
+    const contract = StandardBounties__factory.connect(address, signer)
 
     try {
+      const data = JSON.stringify({
+        title,
+        body,
+        proposalUrl,
+      })
       const added = await ipfsClient.add(data)
       const url = `https://ipfs.infura.io/ipfs/${added.path}`
-      console.log(url)
+
+      await contract.issueAndContribute(
+        account as string,
+        [],
+        [account],
+        url,
+        BigNumber.from('0'),
+        '0xBA78CD28F7132958235D278fF3C5DC5E6d34cc15',
+        BigNumber.from('0'),
+        ethers.utils.parseEther(compansation),
+        { value: ethers.utils.parseEther(compansation) }
+      )
     } catch (e: any) {
       console.error(e)
       setToast({
@@ -47,9 +77,10 @@ export const TasksContextProvider: FC = ({ children }) => {
     } finally {
       setIsCreating(false)
     }
+    loadTasks()
   }
 
-  const value = { createTask, isCreating }
+  const value = { createTask, isCreating, isFetching, tasks }
 
   return <TasksContext.Provider value={value}>{children}</TasksContext.Provider>
 }

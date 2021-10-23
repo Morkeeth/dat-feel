@@ -1,10 +1,9 @@
-// import hardhatContracts from '../generated/contracts/hardhat_contracts.json'
+import hardhatContracts from '../generated/contracts/hardhat_contracts.json'
 import { ContractName } from '../web3/web3-config'
 import { Chains } from '../web3/web3-enums'
 
 const deployments = {
   [Chains.LOCALHOST]: 'localhost',
-  [Chains.BSC_TESNET]: 'smartchaintest',
 }
 
 export const getAddressFromDeployment = (
@@ -13,5 +12,5 @@ export const getAddressFromDeployment = (
 ): string => {
   const deploymentName = deployments[chainId]
 
-  // return hardhatContracts[chainId][deploymentName].contracts[contractName].address
+  return (hardhatContracts as any)[chainId][deploymentName].contracts[contractName].address
 }
