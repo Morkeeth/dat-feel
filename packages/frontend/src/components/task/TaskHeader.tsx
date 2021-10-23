@@ -4,6 +4,7 @@ import { Text, Badge, Button } from '@geist-ui/react'
 import styled from 'styled-components'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
+import GradientText from '../GradientText'
 
 const StyledTitle = styled(Text)`
   margin-bottom: 0;
