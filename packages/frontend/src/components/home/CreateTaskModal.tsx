@@ -51,7 +51,12 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
                 <Textarea width="100%" placeholder="Description" {...descriptionBindings} />
               </Grid>
               <Grid xs={24}>
-                <Input width="100%" icon="$" placeholder="Compansation" {...compansationBindings} />
+                <Input
+                  width="100%"
+                  icon="ETH"
+                  placeholder="Compansation"
+                  {...compansationBindings}
+                />
               </Grid>
               <Grid xs={24}>
                 <Select

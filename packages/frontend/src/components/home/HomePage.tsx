@@ -3,31 +3,16 @@ import * as React from 'react'
 import { FC } from 'react'
 import ProposalList from './ProposalList'
 import Board from './Board'
-import OrgHero from './OrgHero'
 import useIsOrgOwner from '../../hooks/useIsOrgOwner'
-import { OrgMetaData } from '../../types'
+import Leaderboard from '../Leaderboard'
+import Organizations from '../Organizations'
 
-type Props = { org: OrgMetaData }
-
-const HomePage: FC<Props> = ({ org }) => {
-  const isOwner = useIsOrgOwner()
+const HomePage: FC = () => {
   return (
     <div>
-      <OrgHero org={org} />
       <Spacer h={5} />
-      {isOwner && (
-        <>
-          <Collapse
-            shadow
-            title="Governance proposals"
-            subtitle="Create a task from one of your proposals"
-          >
-            <ProposalList />
-          </Collapse>
-          <Spacer h={4} />
-        </>
-      )}
-
+      <Organizations />
+      <Leaderboard />
       <Board />
     </div>
   )

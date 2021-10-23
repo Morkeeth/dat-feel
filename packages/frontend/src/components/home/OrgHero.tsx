@@ -1,4 +1,3 @@
-import { Spacer } from '@geist-ui/react'
 import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'

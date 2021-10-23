@@ -35,7 +35,6 @@ export const TasksContextProvider: FC = ({ children }) => {
     const bounties = await contract.queryFilter('BountyIssued', 0, 'latest')
     const contri = await contract.queryFilter('ContributionAdded', 0, 'latest')
 
-    console.log(contri)
     const _tasks = bounties.map((bountyEvent, i) => new TaskEntity(bountyEvent, contri[i]))
     setTasks(_tasks)
     setIsFetching(false)
@@ -55,11 +54,13 @@ export const TasksContextProvider: FC = ({ children }) => {
       const data = JSON.stringify({
         title,
         body,
+
         proposalUrl,
       })
       const added = await ipfsClient.add(data)
       const url = `https://ipfs.infura.io/ipfs/${added.path}`
 
+      console.log('{compansation', compansation)
       await contract.issueAndContribute(
         account as string,
         [],

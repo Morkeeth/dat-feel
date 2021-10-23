@@ -14,6 +14,8 @@ class TaskEntity {
   issuers: string[]
   token: string
   _tokenVersion: BigNumber
+  amount: BigNumber
+  contributationId: BigNumber
   data?: {
     title: string
     body: string
@@ -39,7 +41,10 @@ class TaskEntity {
     this.deadline = _deadline
     this.token = _token
     this._tokenVersion = _token
-    console.log(contribEvent)
+    this.contributationId = contribEvent?.args[1]
+    this.amount = contribEvent?.args[3]
+
+    console.log(this.contributationId, this.amount)
     if (_data && _data.startsWith('https://')) {
       this.load(_data)
     }
@@ -54,15 +59,17 @@ class TaskEntity {
   }
 
   apply = async () => {
-    console.log(web3Store.signer)
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
-
     const contract = StandardBounties__factory.connect(address, web3Store.signer)
-
-    console.log(this.id, web3Store.account)
-    await contract.addIssuers(web3Store.contractOwner, this.id, web3Store.account, [
+    await contract.addIssuers(
+      web3Store.contractOwner,
+      this.id,
       web3Store.account,
-    ])
+      [web3Store.account],
+      {
+        from: web3Store.account,
+      }
+    )
   }
 }
 

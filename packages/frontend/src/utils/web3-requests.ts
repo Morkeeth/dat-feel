@@ -1,4 +1,6 @@
-import { Task, User } from '../types'
+import axios from 'axios'
+import { organizations } from '../config/config'
+import { Task, User, OrgMetaData } from '../types'
 
 export const getTask = async (taskId: string): Promise<Task> => {
   return {
@@ -14,6 +16,21 @@ export const getTask = async (taskId: string): Promise<Task> => {
     xp: 200,
     createdAt: '2021-10-22',
     completedAt: '2021-11-23',
+  }
+}
+
+export const getDAO = async (org: { url: strng }): Promise<OrgMetaData> => {
+  try {
+    const ipfsLink = organizations.find((o) => o.url === org.url)?.ipfs
+    const { data } = await axios(ipfsLink)
+
+    return {
+      ...org,
+      ...data,
+      name: 'Olympus DAO',
+    }
+  } catch (e) {
+    return {}
   }
 }
 

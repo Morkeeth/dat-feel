@@ -49,4 +49,6 @@ export type OrgMetaData = {
   header: string
   discord: string
   twitter: string
+  contractOwner: string
+  url: string
 }

@@ -21,6 +21,7 @@ const TasksList: FC<Props> = ({ tasks }) => {
             <div>Title: {task.data?.title}</div>
             <div>Description: {task.data?.body}</div>
             <div>proposalUrl: {task.data?.proposalUrl}</div>
+            <div>price: {ethers.utils.formatEther(task.amount)} ETH</div>
             <StatusDot status={task.status} />
             <TaskAction task={task} />
           </Card>
