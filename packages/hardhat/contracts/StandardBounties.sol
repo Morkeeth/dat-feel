@@ -433,6 +433,15 @@ contract StandardBounties {
     require(now < bounties[_bountyId].deadline); // Submissions are only allowed to be made before the deadline
     require(_fulfillers.length > 0); // Submissions with no fulfillers would mean no one gets paid out
 
+    User storage contributor = users[_fulfillers[0]];
+
+    // If user deesn't exist, then register it
+    if (!users[_fulfillers[0]].isValid) {
+      users[_fulfillers[0]] = User(_fulfillers[0], 0, true); // Initial xp value of the user will be 0
+      contributor = users[_fulfillers[0]];
+      emit UserAdded(_fulfillers[0], 0);
+    }
+
     bounties[_bountyId].fulfillments.push(Fulfillment(_fulfillers, _sender));
 
     emit BountyFulfilled(
