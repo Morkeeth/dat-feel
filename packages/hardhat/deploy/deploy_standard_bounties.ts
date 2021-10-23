@@ -2,15 +2,14 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import chalk from 'chalk'
 
-const name = 'Multicall'
+const name = 'StandardBounties'
 
 const func: DeployFunction = async ({
   deployments,
   getNamedAccounts,
 }: HardhatRuntimeEnvironment) => {
-  const { deployer } = await getNamedAccounts()
   const { deploy } = deployments
-
+  const { deployer } = await getNamedAccounts()
   const deployResult = await deploy(name, {
     from: deployer,
   })
