@@ -266,6 +266,7 @@ contract StandardBounties {
     if (!users[_sender].isValid) {
       users[_sender] = User(_sender, 0, true); // Initial xp value of the user will be 0
       contributor = users[_sender];
+      emit UserAdded(_sender, 0);
     }
 
     bounties[_bountyId].contributions.push(Contribution(contributor, _amount, false)); // Adds the contribution to the bounty
@@ -809,6 +810,7 @@ contract StandardBounties {
    * Events
    */
 
+  event UserAdded(address payable _userAddress, uint256 _xp);
   event BountyIssued(
     uint256 _bountyId,
     address payable _creator,

@@ -10,6 +10,7 @@ const useTasks = (owner?: string) => {
 
   useEffect(() => {
     taskStore.fetchTasks()
+    taskStore.fetchUsers()
   }, [owner])
 
   if (owner) {
