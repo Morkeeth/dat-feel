@@ -9,6 +9,7 @@ export type Task = {
   taskValidator: string
   organization: string
   applicants: number[]
+  xp: number
   createdAt: string
   completedAt: string
 }
@@ -16,7 +17,7 @@ export type Task = {
 export type User = {
   id: string
   ipfsContract: string
-  completedTasks: number[]
+  completedTasks: Task[]
   applications: number[]
   xp: number
 }

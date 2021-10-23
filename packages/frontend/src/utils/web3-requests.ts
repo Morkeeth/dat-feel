@@ -11,6 +11,7 @@ export const getTask = async (taskId: string): Promise<Task> => {
     taskValidator: 'vitalik',
     organization: 'Orakuru',
     applicants: [2432, 2343],
+    xp: 200,
     createdAt: '2021-10-22',
     completedAt: '2021-11-23',
   }
@@ -20,8 +21,37 @@ export const getUser = async (userId: string): Promise<User> => {
   return {
     id: userId,
     ipfsContract: '0xgord',
-    completedTasks: [12424, 54546],
+    completedTasks: [
+      {
+        id: '2335',
+        title: 'Simple task',
+        description:
+          'Lorem ipsum task description goes here divisionism maximalism romanticism kinetic art land art.',
+        status: 'Open',
+        price: 8500,
+        taskValidator: 'vitalik',
+        organization: 'Orakuru',
+        applicants: [2432, 2343],
+        xp: 200,
+        createdAt: '2021-10-22',
+        completedAt: '2021-11-23',
+      },
+      {
+        id: '2335',
+        title: 'Simple task',
+        description:
+          'Lorem ipsum task description goes here divisionism maximalism romanticism kinetic art land art.',
+        status: 'Open',
+        price: 8500,
+        taskValidator: 'vitalik',
+        organization: 'Orakuru',
+        applicants: [2432, 2343],
+        xp: 200,
+        createdAt: '2021-10-22',
+        completedAt: '2021-11-23',
+      },
+    ],
     applications: [5353536, 646464],
-    xp: 1337,
+    xp: 126000,
   }
 }

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { User } from '@geist-ui/react'
+import PortfolioHeader from './PortfolioHeader'
+import PortfolioExperienceTable from './PortfolioExperienceTable'
+import PortfolioExperience from './PortfolioExperience'
 import { useUserContext } from '../../contexts/UserContext'
 
 type Props = {}
@@ -10,9 +12,9 @@ const PortfolioPage: FC<Props> = () => {
 
   return (
     <div>
-      <User text="W" name={user.ipfsContract}>
-        {user.id}
-      </User>
+      <PortfolioHeader user={user} />
+      <PortfolioExperience user={user} />
+      <PortfolioExperienceTable user={user} />
     </div>
   )
 }
