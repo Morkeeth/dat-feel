@@ -6,9 +6,13 @@ import MainLayout from '../components/layout/MainLayout'
 import Web3Provider from '../web3/Web3Provider'
 import ThemeProvider from '../providers/ThemeProvider'
 import { UiContextProvider } from '../contexts/UiContext'
+import { orgStore } from '../stores/orgStore'
 
 const queryClient = new QueryClient()
 const App: FC<AppProps> = ({ Component, pageProps }) => {
+  React.useEffect(() => {
+    orgStore.fetch()
+  }, [])
   return (
     <QueryClientProvider client={queryClient}>
       <UiContextProvider>

@@ -3,10 +3,13 @@ import { FC } from 'react'
 import { Text, Button, Spacer } from '@geist-ui/react'
 import { Briefcase } from '@geist-ui/react-icons'
 import styled from 'styled-components'
+import { ethers } from 'ethers'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
 import GradientText from '../GradientText'
 import Countup from '../Countup'
+import { useTaskContext } from '../../contexts/TaskContext'
+import TaskAction from '../home/TaskAction'
 
 const StyledTitle = styled(Text)`
   margin-bottom: 0;
@@ -27,13 +30,17 @@ const UnderTitle = styled(Text)`
   margin-right: 6px;
 `
 
-const TaskHeader: FC<Task> = ({ task }) => {
+type Props = {
+  closeModal: () => void
+}
+
+const TaskHeader: FC<Props> = ({ closeModal }) => {
+  const { task } = useTaskContext()
   return (
     <div>
       <TopWrapper>
         <div>
           <TaskStatus status={task.status} />
-          <StyledTitle h2>{task.title}</StyledTitle>
         </div>
         <div>
           <GradientText
@@ -43,16 +50,18 @@ const TaskHeader: FC<Task> = ({ task }) => {
             fromColor="rgb(255, 159, 225)"
             toColor="rgb(135, 39, 255)"
           >
-            $<Countup value={task.price} />
+            {task.amount && (
+              <div>
+                <Countup value={ethers.utils.formatEther(task.amount)} /> ETH
+              </div>
+            )}
           </GradientText>
-          <Button auto ghost type="success">
-            Apply
-          </Button>
+          <TaskAction task={task} onSuccess={closeModal} />
         </div>
       </TopWrapper>
       <FlexWrapper>
         <UnderTitle>
-          <Briefcase size={12} /> {task.organization}
+          <Briefcase size={12} /> {task.orgName}
         </UnderTitle>
         <Text style={{ margin: 0 }} type="secondary">
           • Created at {task.createdAt}

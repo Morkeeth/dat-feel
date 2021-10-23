@@ -6,9 +6,9 @@ import { GovernanceProposal } from '../../types'
 import { useTasksContext } from '../../contexts/TasksContext'
 import useCreateTask from '../../hooks/useCreateTask'
 
-type Props = { proposal: GovernanceProposal }
+type Props = { proposal: GovernanceProposal; close: () => void }
 
-const CreateTaskModal: FC<Props> = ({ proposal }) => {
+const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
   const { setVisible, bindings } = useModal()
   const { isCreating, create } = useCreateTask()
   const { state: body, bindings: descriptionBindings } = useInput('')
@@ -28,8 +28,8 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
       compansation,
     }
     create(data)
-
     setVisible(false)
+    close()
     e.preventDefault()
   }
 
@@ -54,13 +54,14 @@ const CreateTaskModal: FC<Props> = ({ proposal }) => {
                   width="100%"
                   icon="ETH"
                   placeholder="Compansation"
+                  required
                   {...compansationBindings}
                 />
               </Grid>
               <Grid xs={24}>
                 <Select
                   width="100%"
-                  placeholder="Level"
+                  placeholder="Minimum level"
                   clearable
                   onChange={(value) => setLevel(value as string)}
                 >

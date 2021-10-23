@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { Button, Grid, Page, Spacer } from '@geist-ui/react'
+import { Button, Grid, Link, Page, Spacer } from '@geist-ui/react'
+import NextLink from 'next/link'
 import useWeb3 from '../../web3/useWeb3'
 import WalletConnectButton from '../WalletConnectButton'
 import ThemeToggle from '../ThemeToggle'
@@ -10,7 +11,20 @@ const Header: FC = () => {
   return (
     <Page.Header>
       <Grid.Container justify="space-between">
-        <Grid />
+        <Grid>
+          <Grid.Container gap={2}>
+            <Grid>
+              <NextLink href="/" passHref>
+                <Link>Home</Link>
+              </NextLink>
+            </Grid>
+            <Grid>
+              <NextLink href={`/user/${account}`} passHref>
+                <Link>Account</Link>
+              </NextLink>
+            </Grid>
+          </Grid.Container>
+        </Grid>
         <Grid>
           <Grid.Container gap={1} direction="column">
             <Grid>

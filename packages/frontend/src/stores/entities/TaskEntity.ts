@@ -6,6 +6,8 @@ import { getAddressFromDeployment } from '../../utils/address'
 import { web3Store } from '../web3Store'
 import { StandardBounties__factory } from '../../generated/types/factories/StandardBounties__factory'
 import { taskStore } from '../taskStore'
+import { organizations } from '../../config/config'
+import { orgStore } from '../orgStore'
 
 type ExtraData = {
   status: TaskStatus
@@ -32,10 +34,10 @@ class TaskEntity {
     proposalUrl: string
   }
   fullFillId?: BigNumber
-
   status: TaskStatus = TaskStatus.OPEN
-
   loading = true
+  createdAt: string
+
   constructor(event: ethers.Event, extraData: ExtraData) {
     makeAutoObservable(this, {
       loading: observable,
@@ -57,10 +59,15 @@ class TaskEntity {
     this.status = extraData.status
     this.fullfiller = extraData.fullfiller || ''
     this.fullFillId = extraData.fullFillId
+    this.createdAt = '2021-10-22'
 
     if (_data && _data.startsWith('https://')) {
       this.load(_data)
     }
+  }
+
+  get orgName() {
+    return orgStore.orgs.find((o) => o.owner === this.creator)?.name
   }
 
   load = async (data: string) => {
@@ -74,17 +81,9 @@ class TaskEntity {
   acceptTask = async () => {
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
     const contract = StandardBounties__factory.connect(address, web3Store.signer)
-    console.log('APPROVER:', this.approvers[0])
-    await contract.acceptFulfillment(
-      this.approvers[0],
-      this.id,
-      this.fullFillId as any,
-      this.approvers[0],
-      [this.amount],
-      {
-        from: web3Store.account,
-      }
-    )
+    await contract.acceptFulfillment(this.approvers[0], this.id, this.fullFillId as any, 0, [
+      this.amount,
+    ])
   }
 
   fullfill = async () => {

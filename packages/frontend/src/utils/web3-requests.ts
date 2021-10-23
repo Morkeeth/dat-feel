@@ -27,7 +27,6 @@ export const getDAO = async (org: { url: strng }): Promise<OrgMetaData> => {
     return {
       ...org,
       ...data,
-      name: 'Olympus DAO',
     }
   } catch (e) {
     return {}

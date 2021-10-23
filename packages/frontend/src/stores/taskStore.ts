@@ -66,7 +66,7 @@ export const taskStore = makeAutoObservable<Store>({
       }
     } finally {
       runInAction(() => {
-        taskStore.isCreating = true
+        taskStore.isCreating = false
       })
     }
     return {}

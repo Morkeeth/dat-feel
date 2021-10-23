@@ -1,16 +1,17 @@
 /* This context can be removed once all subpages are using the store directly instead of props */
 
 import React, { createContext, FC, useContext, useState } from 'react'
+import TaskEntity from '../stores/entities/TaskEntity'
 import { Task } from '../types'
 
 type TaskContextType = {
-  task: Task
+  task: TaskEntity
 }
 
 const TaskContext = createContext<TaskContextType>({} as TaskContextType)
 
 type Props = {
-  task: Task
+  task: TaskEntity
 }
 
 export const TaskContextProvider: FC<Props> = ({ children, task }) => {
