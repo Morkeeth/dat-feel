@@ -58,6 +58,9 @@ const OrgHero: FC<Props> = ({ org }) => {
           <Text h1 style={{ margin: 0 }}>
             {org.name}
           </Text>
+          <Text h4 style={{ maxWidth: 600 }} type="secondary">
+            {org.description}
+          </Text>
           <StyledTag type="secondary">Tasks completed: {org.tasks}</StyledTag>
           <StyledTag type="secondary">TVL: {org.tvl}</StyledTag>
         </TitleWrap>
