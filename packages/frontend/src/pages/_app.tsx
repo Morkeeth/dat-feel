@@ -7,11 +7,14 @@ import Web3Provider from '../web3/Web3Provider'
 import ThemeProvider from '../providers/ThemeProvider'
 import { UiContextProvider } from '../contexts/UiContext'
 import { orgStore } from '../stores/orgStore'
+import { taskStore } from '../stores/taskStore'
 
 const queryClient = new QueryClient()
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   React.useEffect(() => {
     orgStore.fetch()
+    taskStore.fetchTasks()
+    taskStore.fetchUsers()
   }, [])
   return (
     <QueryClientProvider client={queryClient}>

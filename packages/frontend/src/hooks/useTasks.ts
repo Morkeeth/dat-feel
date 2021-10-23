@@ -9,11 +9,6 @@ const useTasks = (owner?: string) => {
   let tasks = taskStore.tasks
   const users = taskStore.users
 
-  useEffect(() => {
-    taskStore.fetchTasks()
-    taskStore.fetchUsers()
-  }, [owner])
-
   if (owner) {
     tasks = tasks.filter((task) => task.creator === owner)
   }

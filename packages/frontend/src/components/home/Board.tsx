@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Card, Grid, Spacer, Spinner, Text, useTheme } from '@geist-ui/react'
+import { Card, Grid, Spacer, Spinner, Text } from '@geist-ui/react'
 import { observer } from 'mobx-react-lite'
 import TasksList from './TasksList'
 import useTasks from '../../hooks/useTasks'
@@ -12,9 +12,6 @@ type Props = {
 
 const Board: FC<Props> = ({ owner }) => {
   const { tasks, loading } = useTasks(owner)
-  const theme = useTheme()
-
-  console.log(tasks)
   if (loading) {
     return <Spinner />
   }
