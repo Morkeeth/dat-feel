@@ -3,11 +3,14 @@ import { FC } from 'react'
 import { Card, Grid, Spacer, Spinner, Text, useTheme } from '@geist-ui/react'
 import TasksList from './TasksList'
 import useTasks from '../../hooks/useTasks'
+import useWeb3 from '../../web3/useWeb3'
 
-const Board: FC = () => {
-  const { tasks, loading } = useTasks()
+type Props = {
+  owner: string
+}
 
-  console.log({ tasks, loading })
+const Board: FC<Props> = ({ owner }) => {
+  const { tasks, loading } = useTasks(owner)
   const theme = useTheme()
 
   if (loading) {
@@ -22,9 +25,7 @@ const Board: FC = () => {
           <Text h3>Open</Text>
           <TasksList tasks={openTasks} />
         </Grid>
-        <Grid xs={6} direction="column">
-          <Text h3>Claimed</Text>
-        </Grid>
+
         <Grid xs={6} direction="column">
           <Text h3>Review</Text>
         </Grid>
