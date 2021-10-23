@@ -16,6 +16,8 @@ const DAOPage: FC<Props> = ({ org }) => {
     <div>
       <OrgHero org={org} />
       <Spacer h={5} />
+      <Board owner={org.owner} />
+      <Spacer h={1} />
       {isOwner && (
         <>
           <Collapse
@@ -29,8 +31,6 @@ const DAOPage: FC<Props> = ({ org }) => {
           <Spacer h={4} />
         </>
       )}
-
-      <Board owner={org.owner} />
     </div>
   )
 }
