@@ -36,11 +36,7 @@ contract StandardBounties {
   }
 
   struct Contribution {
-<<<<<<< HEAD
-    address payable contributor; // The address of the individual who contributed
-=======
     User contributor; // The address of the individual who contributed
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     uint256 amount; // The amount of tokens the user contributed
     bool refunded; // A boolean storing whether or not the contribution has been refunded yet
   }
@@ -65,6 +61,8 @@ contract StandardBounties {
   bool public callStarted; // Ensures mutex for the entire contract
 
   mapping(address => User) public users; // A mapping of userAddresses
+
+  User[10] public ranking;
 
   /*
    * Modifiers
@@ -107,11 +105,7 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _issuerId
   ) {
-<<<<<<< HEAD
-    require(_sender == bounties[_bountyId].issuers[_issuerId], 'only issuer');
-=======
     require(_sender == bounties[_bountyId].issuers[_issuerId]);
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     _;
   }
 
@@ -129,11 +123,7 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _contributionId
   ) {
-<<<<<<< HEAD
-    require(_sender == bounties[_bountyId].contributions[_contributionId].contributor);
-=======
     require(_sender == bounties[_bountyId].contributions[_contributionId].contributor.user_address);
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     _;
   }
 
@@ -270,10 +260,6 @@ contract StandardBounties {
   ) public payable senderIsValid(_sender) validateBountyArrayIndex(_bountyId) callNotStarted {
     require(_amount > 0); // Contributions of 0 tokens or token ID 0 should fail
 
-<<<<<<< HEAD
-    bounties[_bountyId].contributions.push(Contribution(_sender, _amount, false)); // Adds the contribution to the bounty
-
-=======
     User storage contributor = users[_sender];
 
     // If user deesn't exist, then register it
@@ -284,7 +270,6 @@ contract StandardBounties {
 
     bounties[_bountyId].contributions.push(Contribution(contributor, _amount, false)); // Adds the contribution to the bounty
 
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
     if (bounties[_bountyId].tokenVersion == 0) {
       bounties[_bountyId].balance = bounties[_bountyId].balance.add(_amount); // Increments the balance of the bounty
 
@@ -516,13 +501,12 @@ contract StandardBounties {
       if (_tokenAmounts[i] > 0) {
         // for each fulfiller associated with the submission
         transferTokens(_bountyId, fulfillment.fulfillers[i], _tokenAmounts[i]);
-<<<<<<< HEAD
-=======
         // increase the xp. Amount * 10
         users[fulfillment.fulfillers[i]].xp = users[fulfillment.fulfillers[i]].xp.add(
           _tokenAmounts[i] * 10
         );
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
+        // update the ranking
+        elaborateTopTen(fulfillment.fulfillers[i], users[fulfillment.fulfillers[i]].xp);
       }
     }
     emit FulfillmentAccepted(_bountyId, _fulfillmentId, _sender, _tokenAmounts);
@@ -762,8 +746,6 @@ contract StandardBounties {
     return bounties[_bountyId];
   }
 
-<<<<<<< HEAD
-=======
   // @dev getUser(): Returns the details of a user
   /// @param _userAddress the user address
   /// @return Returns a tuple for the User
@@ -771,7 +753,6 @@ contract StandardBounties {
     return users[_userAddress];
   }
 
->>>>>>> 62584bf45395a36f81637dfd369cb1555ae5f174
   function transferTokens(
     uint256 _bountyId,
     address payable _to,
@@ -800,6 +781,28 @@ contract StandardBounties {
     } else {
       revert();
     }
+  }
+
+  /*
+   * Private functions
+   */
+
+  function elaborateTopTen(address payable user_address, uint256 xp) private {
+    uint256 i = 0;
+    /** get the index of the current max element **/
+    for (i; i < ranking.length; i++) {
+      if (ranking[i].xp < xp) {
+        break;
+      }
+    }
+    /** shift the array of position (getting rid of the last element) **/
+    for (uint256 j = ranking.length - 1; j > i; j--) {
+      ranking[j].xp = ranking[j - 1].xp;
+      ranking[j].user_address = ranking[j - 1].user_address;
+    }
+    /** update the new max element **/
+    ranking[i].xp = xp;
+    ranking[i].user_address = user_address;
   }
 
   /*
