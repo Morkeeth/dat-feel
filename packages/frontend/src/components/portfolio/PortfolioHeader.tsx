@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
+import { CheckInCircle } from '@geist-ui/react-icons'
 import { Dot, Text, Spacer, Avatar } from '@geist-ui/react'
 
 const StyledAvatar = styled(Avatar)`
@@ -20,12 +21,18 @@ const SubTitle = styled(Text)`
   margin: 0;
 `
 
+const VerifiedIcon = styled(CheckInCircle)`
+  stroke-width: 3px;
+`
+
 const PortfolioHeader: FC = ({ user }) => {
   return (
     <div>
       <AvatarWrapper>
-        <StyledAvatar text={user.id[0].toUpperCase()} />
-        <Title h2>{user.id}</Title>
+        <StyledAvatar src="https://unix.bio/assets/avatar.png" text={user.id[0].toUpperCase()} />
+        <Title h2>
+          {user.id} <VerifiedIcon size={20} />
+        </Title>
         <SubTitle p type="secondary">
           {user.xp} experience • Joined {user.completedTasks[0].completedAt}
         </SubTitle>
