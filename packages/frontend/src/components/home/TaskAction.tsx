@@ -15,6 +15,7 @@ const TaskAction: FC<Props> = ({ task }) => {
   const { isConnected, account } = useWeb3()
 
   if (!isConnected) {
+    
     return null
   }
 
@@ -23,13 +24,13 @@ const TaskAction: FC<Props> = ({ task }) => {
       task.fullfill()
     }
 
-    return <Button onClick={fullfill}>Fullfill</Button>
+    return <Button auto onClick={fullfill}>Submit task</Button>
   }
 
   const acceptTask = () => {}
 
   if (task.status === TaskStatus.REVIEW && task.creator === account) {
-    return <Button onClick={acceptTask}>Accept</Button>
+    return <Button auto onClick={acceptTask}>Accept</Button>
   }
 
   return null

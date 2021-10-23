@@ -26,6 +26,11 @@ const StyledCard = styled(Card)`
   }
 `
 
+const ActionWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
 const TaskCard: FC<{ task: Task }> = ({ task }) => {
   return (
     <Link href={`/task/${task.id}`} passHref>
@@ -38,7 +43,9 @@ const TaskCard: FC<{ task: Task }> = ({ task }) => {
         </TopWrapper>
         <StyledTitle h4>{task.data?.title}</StyledTitle>
         <Text>{task.data?.body}</Text>
-        <TaskAction task={task} />
+        <ActionWrapper>
+          <TaskAction task={task} />
+        </ActionWrapper>
       </StyledCard>
     </Link>
   )

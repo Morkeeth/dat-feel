@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
+import { Text, Tag } from '@geist-ui/react'
 import { OrgMetaData } from '../../types'
 
 const Container = styled.div`
@@ -21,15 +22,46 @@ const Logo = styled.div`
   }
 `
 
+const StyledLogo = styled.img`
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+`
+
+const LogoWrap = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const StyledTag = styled(Tag)`
+  margin-right: 10px !important;
+`
+
+const TitleWrap = styled.div``
+
 type Props = { org: OrgMetaData }
 
 const OrgHero: FC<Props> = ({ org }) => {
   return (
     <Container>
-      <img src={org.header} />
+      {/* <img src={org.header} />
       <Logo>
         <img src={org.logo} />
-      </Logo>
+      </Logo> */}
+      <LogoWrap>
+        <StyledLogo src={org.logo} />
+        <TitleWrap>
+          <Text h1 style={{ margin: 0 }}>
+            {org.name}
+          </Text>
+          <StyledTag type="secondary">Tasks completed: {org.tasks}</StyledTag>
+          <StyledTag type="secondary">TVL: {org.tvl}</StyledTag>
+        </TitleWrap>
+      </LogoWrap>
     </Container>
   )
 }
