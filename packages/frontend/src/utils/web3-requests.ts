@@ -5,7 +5,7 @@ export const getTask = async (taskId: string): Promise<Task> => {
     id: taskId,
     title: 'Simple task',
     description:
-      'Lorem ipsum task description goes here divisionism maximalism romanticism kinetic art land art, romanesque socialist realism fluxus romanesque tonalism carolingian, maximalism fluxus neo-expressionism les nabis.',
+      'Lorem ipsum task description **in markdown** with *italics* etc goes here divisionism maximalism romanticism kinetic art land art, romanesque socialist realism fluxus romanesque tonalism carolingian, maximalism fluxus neo-expressionism les nabis.',
     status: 'Open',
     price: 8500,
     taskValidator: 'vitalik',
@@ -67,5 +67,6 @@ export const getUser = async (userId: string): Promise<User> => {
     ],
     applications: [5353536, 646464],
     xp: 126000,
+    bio: 'Lorem ipsum bio, LFG!',
   }
 }

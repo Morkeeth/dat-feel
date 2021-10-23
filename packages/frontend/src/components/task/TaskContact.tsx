@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Text, User } from '@geist-ui/react'
+import { Spacer, Text, User } from '@geist-ui/react'
 
 type Props = {
   validator: string
@@ -13,6 +13,7 @@ const TaskContact: FC<Props> = ({ validator }) => {
       <User src="https://unix.bio/assets/avatar.png" name={validator}>
         Task validator
       </User>
+      <Spacer h={2} />
     </div>
   )
 }

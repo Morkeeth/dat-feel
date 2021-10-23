@@ -1,9 +1,10 @@
 // To-do: Fix better / more accurate typing
+type Markdown = string
 
 export type Task = {
   id: string
   title: string
-  description: string
+  description: Markdown
   status: string
   price: number
   taskValidator: string
@@ -20,6 +21,7 @@ export type User = {
   completedTasks: Task[]
   applications: number[]
   xp: number
+  bio: Markdown
 }
 
 type Proposer = {

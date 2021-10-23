@@ -2,9 +2,10 @@ import * as React from 'react'
 import { FC } from 'react'
 import { Text, Card } from '@geist-ui/react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
-import Link from 'next/link'
+import GradientText from '../GradientText'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -27,10 +28,10 @@ const TaskCard: FC<Task> = ({ task }) => {
       <StyledCard width="100%" key={task.id} hoverable>
         <TopWrapper>
           <StyledTitle h4>{task.title}</StyledTitle>
-          <Text span type="secondary">
+          <GradientText span b fromColor="red" toColor="yellow">
             {' '}
             ${task.price}
-          </Text>
+          </GradientText>
         </TopWrapper>
         <TaskStatus status={task.status} />
         <Text>{task.description}</Text>
