@@ -7,6 +7,7 @@ import useWeb3 from '../web3/useWeb3'
 
 const useTasks = (owner?: string) => {
   let tasks = taskStore.tasks
+  const users = taskStore.users
 
   useEffect(() => {
     taskStore.fetchTasks()
@@ -19,6 +20,7 @@ const useTasks = (owner?: string) => {
 
   return {
     tasks,
+    users,
     loading: taskStore.isFetching,
   }
 }

@@ -1,4 +1,6 @@
 import { Spinner } from '@geist-ui/react'
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { FC } from 'react'
 import useTasks from '../hooks/useTasks'
@@ -14,8 +16,8 @@ const Leaderboard: FC<Props> = ({ owner }) => {
     return <Spinner />
   }
 
-  console.log({ users })
+  console.log({ users: toJS(users) })
   return <div />
 }
 
-export default Leaderboard
+export default observer(Leaderboard)
