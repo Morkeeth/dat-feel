@@ -6,6 +6,7 @@ import Board from './Board'
 import OrgHero from './OrgHero'
 import useIsOrgOwner from '../../hooks/useIsOrgOwner'
 import { OrgMetaData } from '../../types'
+import useTasks from '../../hooks/useTasks'
 
 type Props = { org: OrgMetaData }
 
