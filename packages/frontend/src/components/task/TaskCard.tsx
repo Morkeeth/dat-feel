@@ -6,6 +6,8 @@ import Link from 'next/link'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
 import GradientText from '../GradientText'
+import { formatBigNumber } from '../../utils/formatters'
+import Countup from '../Countup'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -13,7 +15,7 @@ const TopWrapper = styled.div`
 `
 
 const StyledTitle = styled(Text)`
-  margin-bottom: 0;
+  margin-top: 10px;
 `
 
 const StyledCard = styled(Card)`
@@ -24,17 +26,16 @@ const StyledCard = styled(Card)`
 
 const TaskCard: FC<Task> = ({ task }) => {
   return (
-    <Link href={`/task/${task.id}`} passHref>
+    <Link href={`/task/${task.data?.proposalUrl}`} passHref>
       <StyledCard width="100%" key={task.id} hoverable>
         <TopWrapper>
-          <StyledTitle h4>{task.title}</StyledTitle>
+          <TaskStatus status={task.status} />
           <GradientText span b fromColor="red" toColor="yellow">
-            {' '}
-            ${task.price}
+            <Countup value={formatBigNumber(task?.amount)} /> ETH
           </GradientText>
         </TopWrapper>
-        <TaskStatus status={task.status} />
-        <Text>{task.description}</Text>
+        <StyledTitle h4>{task.data?.title}</StyledTitle>
+        <Text>{task.data?.body}</Text>
       </StyledCard>
     </Link>
   )

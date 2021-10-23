@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import TaskAction from './TaskAction'
 import TaskEntity from '../../stores/entities/TaskEntity'
 import StatusDot from '../StatusDot'
+import TaskCard from '../task/TaskCard'
 
 type Props = {
   tasks: TaskEntity[]
@@ -16,6 +17,7 @@ const TasksList: FC<Props> = ({ tasks }) => {
     <Grid.Container gap={3}>
       {tasks.map((task) => (
         <Grid key={task.id} direction="column">
+          <TaskCard task={task} />
           <Card width="100%">
             {/* Bounty id: {ethers.utils.formatEther(task.id)} */}
             <div>Title: {task.data?.title}</div>

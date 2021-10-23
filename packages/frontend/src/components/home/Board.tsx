@@ -20,6 +20,7 @@ const Board: FC<Props> = ({ owner }) => {
   const openTasks = tasks.filter((task) => true)
   return (
     <>
+      <Text h2>Latest tasks</Text>
       <Grid.Container>
         <Grid xs={6} direction="column">
           <Text h3>Open</Text>
@@ -30,7 +31,7 @@ const Board: FC<Props> = ({ owner }) => {
           <Text h3>Review</Text>
         </Grid>
         <Grid xs={6} direction="column">
-          Done
+          <Text h3>Done</Text>
         </Grid>
       </Grid.Container>
       <Spacer h={4} />

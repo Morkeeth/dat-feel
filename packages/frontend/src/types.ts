@@ -1,18 +1,23 @@
+import { BigNumber } from 'ethers'
+
 // To-do: Fix better / more accurate typing
 type Markdown = string
 
 export type Task = {
+  approvers: string[]
   id: string
-  title: string
-  description: Markdown
-  status: string
-  price: number
-  taskValidator: string
-  organization: string
-  applicants: number[]
-  xp: number
-  createdAt: string
-  completedAt: string
+  creator: string
+  deadline: BigNumber
+  issuers: string[]
+  token: string
+  _tokenVersion: BigNumber
+  amount: BigNumber
+  contributationId: BigNumber
+  data?: {
+    title: string
+    body: string
+    proposalUrl: string
+  }
 }
 
 export type User = {
