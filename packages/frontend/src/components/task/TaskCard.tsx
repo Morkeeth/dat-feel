@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
 import { Text, Card } from '@geist-ui/react'
 import styled from 'styled-components'
@@ -24,13 +25,13 @@ const StyledCard = styled(Card)`
   }
 `
 
-const TaskCard: FC<Task> = ({ task }) => {
+const TaskCard: FC<{ task: Task }> = ({ task }) => {
   return (
     <Link href={`/task/${task.id}`} passHref>
       <StyledCard width="100%" key={task.id} hoverable>
         <TopWrapper>
-          <TaskStatus status={task.status} />
-          <GradientText span b fromColor="red" toColor="yellow">
+          <TaskStatus status={task?.status} />
+          <GradientText span b fromColor="rgb(255, 159, 225)" toColor="rgb(135, 39, 255)">
             <Countup value={formatBigNumber(task?.amount)} /> ETH
           </GradientText>
         </TopWrapper>
@@ -41,4 +42,4 @@ const TaskCard: FC<Task> = ({ task }) => {
   )
 }
 
-export default TaskCard
+export default observer(TaskCard)

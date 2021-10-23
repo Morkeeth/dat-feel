@@ -4,6 +4,7 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "react/no-array-index-key": "off"
+    "react/no-array-index-key": "off",
+    "prefer-destructuring": "off"
   }
 }

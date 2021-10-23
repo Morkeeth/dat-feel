@@ -5,7 +5,13 @@ import { TaskStatus } from '../../config/enums'
 import { getAddressFromDeployment } from '../../utils/address'
 import { web3Store } from '../web3Store'
 import { StandardBounties__factory } from '../../generated/types/factories/StandardBounties__factory'
+import { taskStore } from '../taskStore'
 
+type ExtraData = {
+  status: TaskStatus
+  contributationId: BigNumber
+  amount: BigNumber
+}
 class TaskEntity {
   approvers: string[]
   id: string
@@ -16,6 +22,7 @@ class TaskEntity {
   _tokenVersion: BigNumber
   amount: BigNumber
   contributationId: BigNumber
+  fullfiller: string
   data?: {
     title: string
     body: string
@@ -25,7 +32,7 @@ class TaskEntity {
   status: TaskStatus = TaskStatus.OPEN
 
   loading = true
-  constructor(event: ethers.Event, contribEvent: ethers.Event) {
+  constructor(event: ethers.Event, extraData: ExtraData) {
     makeAutoObservable(this, {
       loading: observable,
       data: observable,
@@ -41,10 +48,11 @@ class TaskEntity {
     this.deadline = _deadline
     this.token = _token
     this._tokenVersion = _token
-    this.contributationId = contribEvent?.args[1]
-    this.amount = contribEvent?.args[3]
+    this.contributationId = extraData.contributationId
+    this.amount = extraData.amount
+    this.status = extraData.status
+    this.fullfiller = extraData.fullfiller
 
-    console.log(this.contributationId, this.amount)
     if (_data && _data.startsWith('https://')) {
       this.load(_data)
     }
@@ -58,18 +66,19 @@ class TaskEntity {
     })
   }
 
-  apply = async () => {
+  acceptTask = async () => {}
+
+  fullfill = async () => {
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
     const contract = StandardBounties__factory.connect(address, web3Store.signer)
-    await contract.addIssuers(
+    await contract.fulfillBounty(
       web3Store.contractOwner,
       this.id,
-      web3Store.account,
       [web3Store.account],
-      {
-        from: web3Store.account,
-      }
+      'https://ipfs.infura.io/ipfs/QmQ89DK4GFAejMh4SCxtWDRu5Di3WMrp6aZnzZ2pMtEfPS'
     )
+
+    taskStore.fetchTasks()
   }
 }
 

@@ -11,9 +11,8 @@ const Logo = styled.div`
   width: 150px;
   height: 150px;
 `
-type Props = {}
 
-const Organizations: FC<Props> = () => {
+const Organizations: FC = () => {
   const [loading, setLoading] = React.useState(true)
   const [orgz, setOrgz] = React.useState<OrgMetaData[]>()
 
@@ -37,7 +36,7 @@ const Organizations: FC<Props> = () => {
         {orgz?.map((org) => (
           <Grid key={org.name}>
             <Logo>
-              <Link href={`/dao/${org.url}`}>
+              <Link href={`/dao/${org.url}`} passHref>
                 <a>
                   <img src={org.logo} />
                 </a>

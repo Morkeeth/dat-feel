@@ -10,7 +10,7 @@ import ProposalList from '../home/ProposalList'
 type Props = { org: OrgMetaData }
 
 const DAOPage: FC<Props> = ({ org }) => {
-  const isOwner = useIsOrgOwner()
+  const isOwner = useIsOrgOwner(org)
   return (
     <div>
       <OrgHero org={org} />

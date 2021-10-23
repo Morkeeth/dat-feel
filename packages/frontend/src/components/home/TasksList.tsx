@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import TaskAction from './TaskAction'
 import TaskEntity from '../../stores/entities/TaskEntity'
 import StatusDot from '../StatusDot'
+import { TaskStatus } from '../../config/enums'
 import TaskCard from '../task/TaskCard'
 
 type Props = {

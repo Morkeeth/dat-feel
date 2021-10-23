@@ -1,4 +1,5 @@
 import { BigNumber } from 'ethers'
+import { TaskStatus } from '../src/config/enums'
 
 // To-do: Fix better / more accurate typing
 type Markdown = string
@@ -6,6 +7,7 @@ type Markdown = string
 export type Task = {
   approvers: string[]
   id: string
+  status: TaskStatus
   creator: string
   deadline: BigNumber
   issuers: string[]
@@ -56,6 +58,6 @@ export type OrgMetaData = {
   header: string
   discord: string
   twitter: string
-  contractOwner: string
+  owner: string
   url: string
 }
