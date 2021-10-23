@@ -4,7 +4,7 @@ import { Text, Button, Spacer } from '@geist-ui/react'
 import { Briefcase } from '@geist-ui/react-icons'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
-import TaskStatus from './TaskStatus'
+import TaskStatusDot from './TaskStatusDot'
 import { Task } from '../../types'
 import GradientText from '../GradientText'
 import Countup from '../Countup'
@@ -40,7 +40,7 @@ const TaskHeader: FC<Props> = ({ closeModal }) => {
     <div>
       <TopWrapper>
         <div>
-          <TaskStatus status={task.status} />
+          <TaskStatusDot status={task.status} />
         </div>
         <div>
           <GradientText

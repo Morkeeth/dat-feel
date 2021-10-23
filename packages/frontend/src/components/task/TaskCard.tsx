@@ -3,14 +3,12 @@ import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
 import { Text, Card, useModal } from '@geist-ui/react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import TaskStatus from './TaskStatus'
+import Markdown from 'markdown-to-jsx'
+import TaskStatusDot from './TaskStatusDot'
 import TaskModal from './TaskModal'
-import { Task } from '../../types'
 import GradientText from '../GradientText'
 import { formatBigNumber } from '../../utils/formatters'
 import Countup from '../Countup'
-import TaskAction from '../home/TaskAction'
 import TaskEntity from '../../stores/entities/TaskEntity'
 
 const TopWrapper = styled.div`
@@ -20,10 +18,14 @@ const TopWrapper = styled.div`
 
 const StyledTitle = styled(Text)`
   margin-top: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `
 
 const StyledCard = styled(Card)`
-  max-width: 250px;
+  max-width: 450px;
+  min-width: 450px;
   &:hover {
     cursor: pointer;
   }
@@ -37,13 +39,13 @@ const TaskCard: FC<{ task: TaskEntity }> = ({ task }) => {
     <>
       <StyledCard width="100%" key={task.id} hoverable onClick={() => setVisible(true)}>
         <TopWrapper>
-          <TaskStatus status={task?.status} />
+          <TaskStatusDot status={task?.status} />
           <GradientText span b fromColor="rgb(255, 159, 225)" toColor="rgb(135, 39, 255)">
             <Countup value={formatBigNumber(task?.amount)} /> ETH
           </GradientText>
         </TopWrapper>
         <StyledTitle h4>{task.data?.title}</StyledTitle>
-        <Text>{task.data?.body}</Text>
+        <Markdown>{task.data?.body ? task.data.body : ''}</Markdown>
       </StyledCard>
       <TaskModal task={task} closeModal={() => setVisible(false)} bindings={bindings} />
     </>
