@@ -26,7 +26,7 @@
     "wallet": "cd packages/hardhat && npx hardhat wallet",
     "fundedwallet": "cd packages/hardhat && npx hardhat fundedwallet",
     "flatten": "cd packages/hardhat && npx hardhat flatten",
-    "clean": "cd packages/hardhat && npx hardhat clean",
+    "clean": "yarn clean:files && cd packages/hardhat && npx hardhat clean",
     "run-graph-node": "yarn workspace @dat-feel/services run-graph-node",
     "remove-graph-node": "yarn workspace @dat-feel/services remove-graph-node",
     "graph-run-node": "rm -rf docker/graph-node/data && cd docker/graph-node && docker-compose up",
@@ -40,7 +40,8 @@
     "graph-ship-local": "yarn graph-prepare && yarn graph-codegen && yarn graph-deploy-local",
     "deploy-and-graph": "yarn deploy && yarn graph-ship-local",
     "theme": "yarn workspace @dat-feel/frontend theme",
-    "watch-theme": "yarn workspace @dat-feel/frontend watch"
+    "watch-theme": "yarn workspace @dat-feel/frontend watch",
+    "clean:files": "npx ts-node scripts/clean.ts"
   },
   "workspaces": {
     "packages": [

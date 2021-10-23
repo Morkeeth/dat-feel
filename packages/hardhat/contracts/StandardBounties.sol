@@ -62,6 +62,8 @@ contract StandardBounties {
 
   mapping(address => User) public users; // A mapping of userAddresses
 
+  User[10] public ranking;
+
   /*
    * Modifiers
    */
@@ -103,7 +105,7 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _issuerId
   ) {
-    require(_sender == bounties[_bountyId].issuers[_issuerId], 'only issuer');
+    require(_sender == bounties[_bountyId].issuers[_issuerId]);
     _;
   }
 
@@ -130,7 +132,7 @@ contract StandardBounties {
     uint256 _bountyId,
     uint256 _approverId
   ) {
-    require(_sender == bounties[_bountyId].approvers[_approverId], 'not approver');
+    require(_sender == bounties[_bountyId].approvers[_approverId]);
     _;
   }
 
@@ -264,6 +266,7 @@ contract StandardBounties {
     if (!users[_sender].isValid) {
       users[_sender] = User(_sender, 0, true); // Initial xp value of the user will be 0
       contributor = users[_sender];
+      emit UserAdded(_sender, 0);
     }
 
     bounties[_bountyId].contributions.push(Contribution(contributor, _amount, false)); // Adds the contribution to the bounty
@@ -503,6 +506,8 @@ contract StandardBounties {
         users[fulfillment.fulfillers[i]].xp = users[fulfillment.fulfillers[i]].xp.add(
           _tokenAmounts[i] * 10
         );
+        // update the ranking
+        elaborateTopTen(fulfillment.fulfillers[i], users[fulfillment.fulfillers[i]].xp);
       }
     }
     emit FulfillmentAccepted(_bountyId, _fulfillmentId, _sender, _tokenAmounts);
@@ -780,9 +785,32 @@ contract StandardBounties {
   }
 
   /*
+   * Private functions
+   */
+
+  function elaborateTopTen(address payable user_address, uint256 xp) private {
+    uint256 i = 0;
+    /** get the index of the current max element **/
+    for (i; i < ranking.length; i++) {
+      if (ranking[i].xp < xp) {
+        break;
+      }
+    }
+    /** shift the array of position (getting rid of the last element) **/
+    for (uint256 j = ranking.length - 1; j > i; j--) {
+      ranking[j].xp = ranking[j - 1].xp;
+      ranking[j].user_address = ranking[j - 1].user_address;
+    }
+    /** update the new max element **/
+    ranking[i].xp = xp;
+    ranking[i].user_address = user_address;
+  }
+
+  /*
    * Events
    */
 
+  event UserAdded(address payable _userAddress, uint256 _xp);
   event BountyIssued(
     uint256 _bountyId,
     address payable _creator,

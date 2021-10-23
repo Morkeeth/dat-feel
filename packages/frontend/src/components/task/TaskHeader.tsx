@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
 import GradientText from '../GradientText'
+import Countup from '../Countup'
 
 const StyledTitle = styled(Text)`
   margin-bottom: 0;
@@ -37,11 +38,12 @@ const TaskHeader: FC<Task> = ({ task }) => {
         <div>
           <GradientText
             b
+            h3
             style={{ marginRight: '10px' }}
             fromColor="rgb(255, 159, 225)"
             toColor="rgb(135, 39, 255)"
           >
-            ${task.price}
+            $<Countup value={task.price} />
           </GradientText>
           <Button auto ghost type="success">
             Apply

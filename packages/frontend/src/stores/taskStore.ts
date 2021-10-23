@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { ethers } from 'ethers'
 import TaskEntity from './entities/TaskEntity'
 import { web3Store } from './web3Store'
-import { StandardBounties__factory } from '../generated/types'
+import { StandardBounties, StandardBounties__factory } from '../generated/types'
 import { getAddressFromDeployment } from '../utils/address'
 import { ipfsClient } from '../utils/ipfs'
 import { TaskCreationDataArgs } from '../types'
@@ -10,15 +10,20 @@ import { TaskStatus } from '../config/enums'
 
 type Store = {
   tasks: TaskEntity[]
+  users: any
   setTasks: (tasks: TaskEntity[]) => void
   fetchTasks: () => void
   isFetching: boolean
   isCreating: boolean
   createTask: (args: TaskCreationDataArgs) => Promise<any>
+  fetchUsers: () => void
 }
+
+type UserAddedEvent = StandardBounties['filters']['UserAdded']
 
 export const taskStore = makeAutoObservable<Store>({
   tasks: [],
+  users: [],
   isFetching: false,
   isCreating: false,
   setTasks: (tasks: TaskEntity[]) => {
@@ -65,6 +70,19 @@ export const taskStore = makeAutoObservable<Store>({
       })
     }
     return {}
+  },
+
+  fetchUsers: async () => {
+    const contract = StandardBounties__factory.connect(
+      getAddressFromDeployment('StandardBounties', web3Store.chainId),
+      web3Store.provider
+    )
+
+    const users = await contract.queryFilter('UserAdded', 0, 'latest')
+
+    runInAction(() => {
+      taskStore.users = users
+    })
   },
 
   fetchTasks: async () => {
