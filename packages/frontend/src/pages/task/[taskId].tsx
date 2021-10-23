@@ -28,10 +28,11 @@ const Page: NextPage<{ task: Task }> = ({ task }) => {
 const ids = [1, 2, 3, 4]
 
 export async function getStaticProps(context) {
+  const response = await getTask(context.params.taskId)
   return {
     props: {
       taskId: context.params.taskId,
-      task: await getTask(context.params.taskId),
+      task: JSON.parse(JSON.stringify(response)),
     },
     revalidate: 10, // In seconds
   }
