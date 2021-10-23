@@ -10,6 +10,7 @@ import { StandardBounties__factory } from '../generated/types'
 import useAddress from '../web3/useAddress'
 import useWeb3 from '../web3/useWeb3'
 import TaskEntity from '../stores/entities/TaskEntity'
+import { TaskStatus } from '../config/enums'
 
 type TasksContextType = {
   isCreating: boolean
@@ -32,8 +33,10 @@ export const TasksContextProvider: FC = ({ children }) => {
     setIsFetching(true)
     const contract = StandardBounties__factory.connect(address, provider)
     const bounties = await contract.queryFilter('BountyIssued', 0, 'latest')
+    const contri = await contract.queryFilter('ContributionAdded', 0, 'latest')
 
-    const _tasks = bounties.map((bountyEvent) => new TaskEntity(bountyEvent))
+    console.log(contri)
+    const _tasks = bounties.map((bountyEvent, i) => new TaskEntity(bountyEvent, contri[i]))
     setTasks(_tasks)
     setIsFetching(false)
   }

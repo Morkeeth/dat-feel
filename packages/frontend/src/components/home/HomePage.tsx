@@ -1,12 +1,11 @@
 import { Spacer, Collapse } from '@geist-ui/react'
 import * as React from 'react'
 import { FC } from 'react'
-import TaskList from './TaskList'
+import ProposalList from './ProposalList'
 import Board from './Board'
 import OrgHero from './OrgHero'
 import useIsOrgOwner from '../../hooks/useIsOrgOwner'
 import { OrgMetaData } from '../../types'
-import useTasks from '../../hooks/useTasks'
 
 type Props = { org: OrgMetaData }
 
@@ -23,7 +22,7 @@ const HomePage: FC<Props> = ({ org }) => {
             title="Governance proposals"
             subtitle="Create a task from one of your proposals"
           >
-            <TaskList />
+            <ProposalList />
           </Collapse>
           <Spacer h={4} />
         </>
