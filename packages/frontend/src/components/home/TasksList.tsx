@@ -14,9 +14,12 @@ type Props = {
 }
 
 const TasksList: FC<Props> = ({ tasks }) => {
+  const items = tasks
+    .slice()
+    .sort((a, b) => Number(b.deadline.toString()) - Number(a.deadline.toString()))
   return (
-    <Grid.Container gap={3}>
-      {tasks.map((task) => (
+    <Grid.Container gap={3} margin={0}>
+      {items.map((task) => (
         <Grid key={task.id} direction="column">
           <TaskCard task={task} />
           <Card width="100%">

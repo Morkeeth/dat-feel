@@ -11,6 +11,9 @@ type ExtraData = {
   status: TaskStatus
   contributationId: BigNumber
   amount: BigNumber
+  fullFillId?: BigNumber
+  fullfiller?: string
+  approver?: string
 }
 class TaskEntity {
   approvers: string[]
@@ -28,6 +31,7 @@ class TaskEntity {
     body: string
     proposalUrl: string
   }
+  fullFillId?: BigNumber
 
   status: TaskStatus = TaskStatus.OPEN
 
@@ -51,7 +55,8 @@ class TaskEntity {
     this.contributationId = extraData.contributationId
     this.amount = extraData.amount
     this.status = extraData.status
-    this.fullfiller = extraData.fullfiller
+    this.fullfiller = extraData.fullfiller || ''
+    this.fullFillId = extraData.fullFillId
 
     if (_data && _data.startsWith('https://')) {
       this.load(_data)
@@ -66,7 +71,21 @@ class TaskEntity {
     })
   }
 
-  acceptTask = async () => {}
+  acceptTask = async () => {
+    const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
+    const contract = StandardBounties__factory.connect(address, web3Store.signer)
+    console.log('APPROVER:', this.approvers[0])
+    await contract.acceptFulfillment(
+      this.approvers[0],
+      this.id,
+      this.fullFillId as any,
+      this.approvers[0],
+      [this.amount],
+      {
+        from: web3Store.account,
+      }
+    )
+  }
 
   fullfill = async () => {
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)

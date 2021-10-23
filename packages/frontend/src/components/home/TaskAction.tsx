@@ -4,7 +4,6 @@ import * as React from 'react'
 import { FC } from 'react'
 import { TaskStatus } from '../../config/enums'
 import TaskEntity from '../../stores/entities/TaskEntity'
-import { web3Store } from '../../stores/web3Store'
 import useWeb3 from '../../web3/useWeb3'
 
 type Props = {
@@ -23,10 +22,16 @@ const TaskAction: FC<Props> = ({ task }) => {
       task.fullfill()
     }
 
+    if (task.creator === account) {
+      return null
+    }
+
     return <Button onClick={fullfill}>Fullfill</Button>
   }
 
-  const acceptTask = () => {}
+  const acceptTask = () => {
+    task.acceptTask()
+  }
 
   if (task.status === TaskStatus.REVIEW && task.creator === account) {
     return <Button onClick={acceptTask}>Accept</Button>
