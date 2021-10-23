@@ -18,15 +18,6 @@ const TasksList: FC<Props> = ({ tasks }) => {
       {tasks.map((task) => (
         <Grid key={task.id} direction="column">
           <TaskCard task={task} />
-          <Card width="100%">
-            {/* Bounty id: {ethers.utils.formatEther(task.id)} */}
-            <div>Title: {task.data?.title}</div>
-            <div>Description: {task.data?.body}</div>
-            <div>proposalUrl: {task.data?.proposalUrl}</div>
-            <div>price: {ethers.utils.formatEther(task.amount)} ETH</div>
-            <StatusDot status={task.status} />
-            <TaskAction task={task} />
-          </Card>
         </Grid>
       ))}
     </Grid.Container>

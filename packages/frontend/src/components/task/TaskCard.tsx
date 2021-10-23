@@ -26,7 +26,7 @@ const StyledCard = styled(Card)`
 
 const TaskCard: FC<Task> = ({ task }) => {
   return (
-    <Link href={`/task/${task.data?.proposalUrl}`} passHref>
+    <Link href={`/task/${task.id}`} passHref>
       <StyledCard width="100%" key={task.id} hoverable>
         <TopWrapper>
           <TaskStatus status={task.status} />

@@ -9,7 +9,7 @@ export const formatBigNumber = (value: BigNumber, options?: FormatBigNumberOptio
   return ethers.utils.formatUnits(value, options?.decimals || 18)
 }
 
-const formatNumber = (number: Decimal, decimals = 3) => {
+const formatNumber = (number: Decimal, decimals = 2) => {
   return number.toDecimalPlaces(decimals).toString()
 }
 
