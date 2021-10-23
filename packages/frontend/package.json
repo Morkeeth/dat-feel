@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
@@ -27,8 +27,6 @@
     "@web3-react/portis-connector": "latest",
     "@web3-react/torus-connector": "latest",
     "@web3-react/trezor-connector": "latest",
-    "@web3-react/walletconnect-connector": "^6.2.6",
-    "@web3-react/walletlink-connector": "latest",
     "axios": "^0.23.0",
     "ethers": "5.5.1",
     "graphql-request": "^3.6.1",

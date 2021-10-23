@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core'
 import { useWallet } from 'use-wallet'
 import { useDappConfig } from './web3-config'
 import { Chains } from './web3-enums'
-import { useWeb3ProviderContext } from './Web3Provider'
 
 type UseWeb3Value = {
   account?: string | null | undefined
@@ -28,7 +27,7 @@ const useWeb3 = (): UseWeb3Value => {
       connect('injected')
     },
     disconnect: () => {
-      deactivate()
+      // deactivate()
     },
     isCorrectChain,
   }
