@@ -1,6 +1,34 @@
+import { BigNumber } from 'ethers'
+import { TaskStatus } from '../src/config/enums'
+
+// To-do: Fix better / more accurate typing
+type Markdown = string
+
 export type Task = {
+  approvers: string[]
   id: string
-  title: string
+  status: TaskStatus
+  creator: string
+  deadline: BigNumber
+  issuers: string[]
+  token: string
+  _tokenVersion: BigNumber
+  amount: BigNumber
+  contributationId: BigNumber
+  data?: {
+    title: string
+    body: string
+    proposalUrl: string
+  }
+}
+
+export type User = {
+  id: string
+  ipfsContract: string
+  completedTasks: Task[]
+  applications: number[]
+  xp: number
+  bio: Markdown
 }
 
 type Proposer = {
@@ -30,4 +58,6 @@ export type OrgMetaData = {
   header: string
   discord: string
   twitter: string
+  owner: string
+  url: string
 }

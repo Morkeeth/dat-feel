@@ -1,62 +1,45 @@
 import * as React from 'react'
 import { FC } from 'react'
-import styled from 'styled-components'
-import Trello from 'react-trello'
-import { useTheme } from '@geist-ui/react'
+import { Card, Grid, Spacer, Spinner, Text, useTheme } from '@geist-ui/react'
+import { observer } from 'mobx-react-lite'
+import TasksList from './TasksList'
+import useTasks from '../../hooks/useTasks'
+import { TaskStatus } from '../../config/enums'
 
-const data = {
-  lanes: [
-    {
-      id: 'lane1',
-      title: 'Available',
-      label: '2/2',
-      cards: [
-        {
-          id: 'Card1',
-          title: 'Write Blog',
-          description: 'Can AI make memes',
-          label: '30 mins',
-          draggable: false,
-        },
-        {
-          id: 'Card2',
-          title: 'Pay Rent',
-          description: 'Transfer via NEFT',
-          label: '5 mins',
-          metadata: { sha: 'be312a1' },
-        },
-      ],
-    },
-    {
-      id: 'lane2',
-      title: 'Claimed',
-      label: '0/0',
-      cards: [],
-    },
-    {
-      id: 'lane3',
-      title: 'Review',
-      label: '0/0',
-      cards: [],
-    },
-    {
-      id: 'lane4',
-      title: 'Completed',
-      label: '0/0',
-      cards: [],
-    },
-  ],
+type Props = {
+  owner?: string
 }
 
-const StyledBoard = styled(Trello)`
-  background: transparent;
-  width: 100%;
-`
-
-const Board: FC = () => {
+const Board: FC<Props> = ({ owner }) => {
+  const { tasks, loading } = useTasks(owner)
   const theme = useTheme()
 
-  return <StyledBoard data={data} />
+  if (loading) {
+    return <Spinner />
+  }
+
+  const openTasks = tasks.filter((task) => task.status === TaskStatus.OPEN)
+  const reviewTasks = tasks.filter((task) => task.status === TaskStatus.REVIEW)
+
+  return (
+    <>
+      <Text h2>Latest tasks</Text>
+      <Grid.Container>
+        <Grid xs={8} direction="column">
+          <Text h3>Open</Text>
+          <TasksList tasks={openTasks} />
+        </Grid>
+
+        <Grid xs={8} direction="column">
+          <Text h3>Review</Text> <TasksList tasks={reviewTasks} />
+        </Grid>
+        <Grid xs={8} direction="column">
+          <Text h3>Done</Text>
+        </Grid>
+      </Grid.Container>
+      <Spacer h={4} />
+    </>
+  )
 }
 
-export default Board
+export default observer(Board)

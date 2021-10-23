@@ -2,13 +2,11 @@ import * as React from 'react'
 import { FC } from 'react'
 import { useModal, Button, Modal, Grid } from '@geist-ui/react'
 import { connectorsByName } from '../config/connectors'
-import useWeb3 from '../web3/useWeb3'
 
 type Props = {}
 
 const ConnectWalletModal: FC<Props> = () => {
   const { setVisible, bindings } = useModal()
-  const { activate } = useWeb3()
 
   return (
     <div>
@@ -24,7 +22,7 @@ const ConnectWalletModal: FC<Props> = () => {
                   <Button
                     width="100%"
                     onClick={() => {
-                      activate(name, currentConnector)
+                      // activate(name, currentConnector)
                     }}
                   >
                     {name}{' '}

@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev:frontend": "yarn workspace @dat-feel/frontend dev",
-    "frontend:build": "yarn workspace @dat-feel/frontend build --max-old-space-size=12288",
+    "frontend:build": "yarn workspace @dat-feel/frontend build",
     "frontend:start": "yarn workspace @dat-feel/frontend start",
     "frontend:test": "yarn workspace @dat-feel/frontend test",
-    "build": "yarn workspace @dat-feel/frontend build --max-old-space-size=12288",
+    "build": "yarn workspace @dat-feel/frontend build",
     "prettier": "yarn workspace @dat-feel/frontend prettier",
     "chain": "yarn workspace @dat-feel/hardhat chain",
     "fork": "yarn workspace @dat-feel/hardhat fork",

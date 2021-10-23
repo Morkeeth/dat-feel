@@ -1,10 +1,15 @@
 import * as React from 'react'
 import { FC } from 'react'
+import PortfolioHeader from './PortfolioHeader'
+import PortfolioTabs from './PortfolioTabs'
 
-type Props = {}
-
-const PortfolioPage: FC<Props> = () => {
-  return <div>Portfolio</div>
+const PortfolioPage: FC = () => {
+  return (
+    <div>
+      <PortfolioHeader />
+      <PortfolioTabs />
+    </div>
+  )
 }
 
 export default PortfolioPage
