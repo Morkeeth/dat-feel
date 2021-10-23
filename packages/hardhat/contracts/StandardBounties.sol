@@ -71,7 +71,7 @@ contract StandardBounties {
   modifier validateBountyArrayIndex(
     uint _index)
   {
-    require(_index < numBounties);
+    require(_index < numBounties, 'invalid bounty index');
     _;
   }
 
@@ -79,7 +79,7 @@ contract StandardBounties {
     uint _bountyId,
     uint _index)
   {
-    require(_index < bounties[_bountyId].contributions.length);
+    require(_index < bounties[_bountyId].contributions.length, 'invalid contribution index');
     _;
   }
 
@@ -87,7 +87,7 @@ contract StandardBounties {
     uint _bountyId,
     uint _index)
   {
-    require(_index < bounties[_bountyId].fulfillments.length);
+    require(_index < bounties[_bountyId].fulfillments.length, 'invalid fulfullmint index');
     _;
   }
 
@@ -95,7 +95,7 @@ contract StandardBounties {
     uint _bountyId,
     uint _index)
   {
-    require(_index < bounties[_bountyId].issuers.length);
+    require(_index < bounties[_bountyId].issuers.length, 'invalid issuer index');
     _;
   }
 
@@ -103,7 +103,7 @@ contract StandardBounties {
     uint _bountyId,
     uint _index)
   {
-    require(_index < bounties[_bountyId].approvers.length);
+    require(_index < bounties[_bountyId].approvers.length, 'invalid approver index');
     _;
   }
 
@@ -112,7 +112,7 @@ contract StandardBounties {
   uint _bountyId,
   uint _issuerId)
   {
-  require(_sender == bounties[_bountyId].issuers[_issuerId]);
+  require(_sender == bounties[_bountyId].issuers[_issuerId], 'only issuer');
   _;
   }
 
@@ -122,7 +122,7 @@ contract StandardBounties {
     uint _fulfillmentId)
   {
     require(_sender ==
-            bounties[_bountyId].fulfillments[_fulfillmentId].submitter);
+            bounties[_bountyId].fulfillments[_fulfillmentId].submitter, 'only submitter');
     _;
   }
 
@@ -132,7 +132,7 @@ contract StandardBounties {
   uint _contributionId)
   {
     require(_sender ==
-            bounties[_bountyId].contributions[_contributionId].contributor);
+            bounties[_bountyId].contributions[_contributionId].contributor, 'only contributor');
     _;
   }
 
@@ -141,14 +141,14 @@ contract StandardBounties {
     uint _bountyId,
     uint _approverId)
   {
-    require(_sender == bounties[_bountyId].approvers[_approverId]);
+    require(_sender == bounties[_bountyId].approvers[_approverId], 'not approver');
     _;
   }
 
   modifier hasNotPaid(
     uint _bountyId)
   {
-    require(!bounties[_bountyId].hasPaidOut);
+    require(!bounties[_bountyId].hasPaidOut, 'has paid');
     _;
   }
 
@@ -156,7 +156,7 @@ contract StandardBounties {
     uint _bountyId,
     uint _contributionId)
   {
-    require(!bounties[_bountyId].contributions[_contributionId].refunded);
+    require(!bounties[_bountyId].contributions[_contributionId].refunded, 'has refunded');
     _;
   }
 
