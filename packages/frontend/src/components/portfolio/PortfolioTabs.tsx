@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FC } from 'react'
 import { Tabs, Spacer } from '@geist-ui/react'
-import { CheckInCircle } from '@geist-ui/react-icons'
+import { CheckInCircle, AlignLeft } from '@geist-ui/react-icons'
 import PortfolioExperience from './PortfolioExperience'
 import PortfolioBio from './PortfolioBio'
 
@@ -22,7 +22,7 @@ const PortfolioTabs: FC = () => {
         <Tabs.Item
           label={
             <>
-              <CheckInCircle /> Bio
+              <AlignLeft /> Bio
             </>
           }
           value="2"

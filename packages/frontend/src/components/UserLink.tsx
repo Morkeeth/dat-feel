@@ -6,18 +6,20 @@ import { formatAddressToShort } from '../utils/formatters'
 
 type Props = {
   address: string
+  label: string
   link?: boolean
 }
 
-const UserLink: FC<Props> = ({ address, link }) => {
+const UserLink: FC<Props> = ({ address, label, link, ...props }) => {
   const node = (
     <User
+      {...props}
       onClick={(e) => e.stopPropagation()}
       paddingLeft="0"
       src="https://unix.bio/assets/avatar.png"
       name={formatAddressToShort(address)}
     >
-      {!link && 'Task validator'}
+      {label}
     </User>
   )
 
