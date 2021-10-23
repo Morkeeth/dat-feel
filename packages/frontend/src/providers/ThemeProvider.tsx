@@ -2,9 +2,7 @@ import { FC } from 'react'
 import { GeistProvider, CssBaseline } from '@geist-ui/react'
 import { useUiContext } from '../contexts/UiContext'
 
-type Props = {}
-
-const ThemeProvider: FC<Props> = ({ children }) => {
+const ThemeProvider: FC = ({ children }) => {
   const { themeType } = useUiContext()
 
   return (

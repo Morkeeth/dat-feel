@@ -19,4 +19,7 @@ export type GovernanceProposalSource = 'tally' | 'snapshot'
 export type TaskCreationDataArgs = {
   title: string
   body: string
+  proposalUrl: string
+  level?: string
+  compansation: string
 }
