@@ -32,7 +32,7 @@ const useWeb3 = (): UseWeb3Value => {
       connect('injected')
     },
     disconnect: () => {
-      deactivate()
+      // deactivate()
     },
     isCorrectChain,
     library: _web3ReactContext?.library,

@@ -2,8 +2,8 @@ import * as React from 'react'
 import { FC } from 'react'
 import Link from 'next/link'
 import { Card, Grid, Text, Badge, Spacer } from '@geist-ui/react'
-import TaskStatus from '../task/TaskStatus'
 import styled from 'styled-components'
+import TaskStatus from '../task/TaskStatus'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -14,6 +14,12 @@ const StyledTitle = styled(Text)`
   margin-bottom: 0;
 `
 
+const StyledCard = styled(Card)`
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 const PortfolioExperience: FC = ({ user }) => {
   /*   const renderAction = (value, rowData, rowIndex) => {
     return <Link href={`/task/${rowData.id}`}>View task</Link>
@@ -21,12 +27,12 @@ const PortfolioExperience: FC = ({ user }) => {
 
   return (
     <div>
-      <Text h2>Experience</Text>
+      <Text h3>Experience</Text>
       <Grid.Container gap={2}>
         {user.completedTasks.map((task) => (
           <Grid key={task.id} xs={8} justify="flex-start">
             <Link href={`/task/${task.id}`} passHref>
-              <Card width="100%" key={task.id} hoverable>
+              <StyledCard width="100%" key={task.id} hoverable>
                 <TopWrapper>
                   <StyledTitle h4>{task.title}</StyledTitle>
                   <Text span type="secondary">
@@ -36,7 +42,7 @@ const PortfolioExperience: FC = ({ user }) => {
                 </TopWrapper>
                 <TaskStatus status={task.status} />
                 <Text>{task.description}</Text>
-              </Card>
+              </StyledCard>
             </Link>
           </Grid>
         ))}
