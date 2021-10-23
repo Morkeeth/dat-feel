@@ -22,6 +22,7 @@ const StyledTitle = styled(Text)`
 `
 
 const StyledCard = styled(Card)`
+  max-width: 250px;
   &:hover {
     cursor: pointer;
   }
