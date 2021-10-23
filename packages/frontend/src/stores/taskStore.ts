@@ -65,7 +65,7 @@ export const taskStore = makeAutoObservable<Store>({
       }
     } finally {
       runInAction(() => {
-        taskStore.isCreating = true
+        taskStore.isCreating = false
       })
     }
     return {}
@@ -102,11 +102,13 @@ export const taskStore = makeAutoObservable<Store>({
     const bounties = await contract.queryFilter('BountyIssued', 0, 'latest')
     const contri = await contract.queryFilter('ContributionAdded', 0, 'latest')
     const fullfilled = await contract.queryFilter('BountyFulfilled', 0, 'latest')
+    const accepted = await contract.queryFilter('FulfillmentAccepted', 0, 'latest')
 
     const matchEvent = (id: any) => (event: any) => {
       return event.args._bountyId.toString() === id
     }
 
+    // FulfillmentAccepted(_bountyId, _fulfillmentId, _sender, _tokenAmounts);
     // event ContributionAdded(
     //   uint256 _bountyId,
     //   uint256 _contributionId,
@@ -127,12 +129,14 @@ export const taskStore = makeAutoObservable<Store>({
         contributationId: undefined,
         amount: undefined,
         fullfiller: undefined,
+        fullFillId: undefined,
       }
 
       const fullfilledMatch = fullfilled.find(matchEvent(bountyEvent.args._bountyId.toString()))
 
       if (fullfilledMatch) {
         data.status = TaskStatus.REVIEW
+        data.fullFillId = fullfilledMatch.args[1]
         data.fullfiller = fullfilledMatch.args[2][0]
       }
 

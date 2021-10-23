@@ -11,6 +11,7 @@ type Props = { org: OrgMetaData }
 
 const DAOPage: FC<Props> = ({ org }) => {
   const isOwner = useIsOrgOwner(org)
+  const [randomKey, setRandomKey] = React.useState('')
   return (
     <div>
       <OrgHero org={org} />
@@ -18,11 +19,12 @@ const DAOPage: FC<Props> = ({ org }) => {
       {isOwner && (
         <>
           <Collapse
+            key={randomKey}
             shadow
             title="Governance proposals"
             subtitle="Create a task from one of your proposals"
           >
-            <ProposalList />
+            <ProposalList close={() => setRandomKey(Math.random().toString())} />
           </Collapse>
           <Spacer h={4} />
         </>

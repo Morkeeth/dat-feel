@@ -7,7 +7,10 @@ import { proposalStore } from '../../stores/proposalStore'
 import { formatAddressToShort } from '../../utils/formatters'
 import useProposalsFromGovernance from '../../hooks/useProposalsFromGovernance'
 
-const ProposalList: FC = () => {
+type Props = {
+  close: () => void
+}
+const ProposalList: FC<Props> = ({ close }) => {
   const { data, status } = useProposalsFromGovernance()
 
   return (
@@ -29,7 +32,7 @@ const ProposalList: FC = () => {
                 <Text h3>{item.title}</Text>
                 <div>
                   <Text h6>Proposer: {formatAddressToShort(item.proposer.address)}</Text>
-                  <CreateTaskModal proposal={item} />
+                  <CreateTaskModal close={close} proposal={item} />
                 </div>
               </Card>
             </Grid>

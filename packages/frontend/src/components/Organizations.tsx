@@ -3,9 +3,11 @@ import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import { observer } from 'mobx-react-lite'
 import { organizations } from '../config/config'
 import { OrgMetaData } from '../types'
 import { getDAO } from '../utils/web3-requests'
+import { orgStore } from '../stores/orgStore'
 
 const Logo = styled.div`
   width: 150px;
@@ -13,17 +15,8 @@ const Logo = styled.div`
 `
 
 const Organizations: FC = () => {
-  const [loading, setLoading] = React.useState(true)
-  const [orgz, setOrgz] = React.useState<OrgMetaData[]>()
-
-  React.useEffect(() => {
-    const start = async () => {
-      const result = await Promise.all(organizations.map((org) => getDAO(org)))
-      setOrgz(result as any)
-      setLoading(false)
-    }
-    start()
-  }, [])
+  const loading = orgStore.isLoading
+  const orgz = orgStore.orgs
 
   if (loading) {
     return <Spinner />
@@ -50,4 +43,4 @@ const Organizations: FC = () => {
   )
 }
 
-export default Organizations
+export default observer(Organizations)

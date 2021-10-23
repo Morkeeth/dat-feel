@@ -11,7 +11,8 @@ const TaskDescription: FC<Props> = ({ bioContent }) => {
   return (
     <div>
       <Text h3>Description</Text>
-      <Markdown>{bioContent}</Markdown>
+      {bioContent && <Markdown>{bioContent}</Markdown>}
+
       <Spacer h={2} />
     </div>
   )

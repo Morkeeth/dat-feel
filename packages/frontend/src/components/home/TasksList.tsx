@@ -19,6 +19,9 @@ const Column = styled(Grid.Container)`
 `
 
 const TasksList: FC<Props> = ({ tasks }) => {
+  const items = tasks
+    .slice()
+    .sort((a, b) => Number(b.deadline.toString()) - Number(a.deadline.toString()))
   return (
     <Column gap={3}>
       {tasks.map((task) => (
