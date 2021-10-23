@@ -14,12 +14,14 @@ const Board: FC<Props> = ({ owner }) => {
   const { tasks, loading } = useTasks(owner)
   const theme = useTheme()
 
+  console.log(tasks)
   if (loading) {
     return <Spinner />
   }
 
   const openTasks = tasks.filter((task) => task.status === TaskStatus.OPEN)
   const reviewTasks = tasks.filter((task) => task.status === TaskStatus.REVIEW)
+  const completedTasks = tasks.filter((task) => task.status === TaskStatus.COMPLETE)
 
   return (
     <>
@@ -35,6 +37,7 @@ const Board: FC<Props> = ({ owner }) => {
         </Grid>
         <Grid xs={8} direction="column">
           <Text h3>Done</Text>
+          <TasksList tasks={completedTasks} />
         </Grid>
       </Grid.Container>
       <Spacer h={4} />

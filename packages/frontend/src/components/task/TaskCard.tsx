@@ -3,15 +3,14 @@ import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
 import { Text, Card, useModal } from '@geist-ui/react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import TaskStatus from './TaskStatus'
 import TaskModal from './TaskModal'
-import { Task } from '../../types'
+import TaskStatusComp from './TaskStatus'
 import GradientText from '../GradientText'
 import { formatBigNumber } from '../../utils/formatters'
 import Countup from '../Countup'
-import TaskAction from '../home/TaskAction'
 import TaskEntity from '../../stores/entities/TaskEntity'
+import { TaskStatus } from '../../config/enums'
+import UserLink from '../UserLink'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -36,7 +35,8 @@ const TaskCard: FC<{ task: TaskEntity }> = ({ task }) => {
     <>
       <StyledCard width="100%" key={task.id} hoverable onClick={() => setVisible(true)}>
         <TopWrapper>
-          <TaskStatus status={task?.status} />
+          {task.status !== TaskStatus.OPEN && <UserLink link address={task.fullfiller} />}
+          <TaskStatusComp status={task?.status} />
           <GradientText span b fromColor="rgb(255, 159, 225)" toColor="rgb(135, 39, 255)">
             <Countup value={formatBigNumber(task?.amount)} /> ETH
           </GradientText>
