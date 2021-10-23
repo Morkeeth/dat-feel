@@ -3,11 +3,10 @@ import { FC } from 'react'
 import Link from 'next/link'
 import { Grid } from '@geist-ui/react'
 import TaskCard from '../task/TaskCard'
+import { useUserContext } from '../../contexts/UserContext'
 
-const PortfolioExperience: FC = ({ user }) => {
-  /*   const renderAction = (value, rowData, rowIndex) => {
-    return <Link href={`/task/${rowData.id}`}>View task</Link>
-  } */
+const PortfolioExperience: FC = () => {
+  const { user } = useUserContext()
 
   return (
     <Grid.Container gap={1}>

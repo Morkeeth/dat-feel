@@ -2,7 +2,8 @@ import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
 import { CheckInCircle } from '@geist-ui/react-icons'
-import { Dot, Text, Spacer, Avatar } from '@geist-ui/react'
+import { Text, Spacer, Avatar } from '@geist-ui/react'
+import { useUserContext } from '../../contexts/UserContext'
 
 const StyledAvatar = styled(Avatar)`
   width: 120px !important;
@@ -25,7 +26,9 @@ const VerifiedIcon = styled(CheckInCircle)`
   stroke-width: 3px;
 `
 
-const PortfolioHeader: FC = ({ user }) => {
+const PortfolioHeader: FC = () => {
+  const { user } = useUserContext()
+
   return (
     <div>
       <AvatarWrapper>
@@ -37,10 +40,6 @@ const PortfolioHeader: FC = ({ user }) => {
           {user.xp} experience • Joined {user.completedTasks[0].completedAt}
         </SubTitle>
       </AvatarWrapper>
-
-      {/* <User text={user.id[0].toUpperCase()} name={user.id}>
-        {user.xp} experience
-      </User> */}
       <Spacer h={2} />
     </div>
   )
