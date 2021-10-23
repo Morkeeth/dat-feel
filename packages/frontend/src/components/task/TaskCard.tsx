@@ -4,6 +4,7 @@ import { Text, Card } from '@geist-ui/react'
 import styled from 'styled-components'
 import TaskStatus from './TaskStatus'
 import { Task } from '../../types'
+import Link from 'next/link'
 
 const TopWrapper = styled.div`
   display: flex;
@@ -22,17 +23,19 @@ const StyledCard = styled(Card)`
 
 const TaskCard: FC<Task> = ({ task }) => {
   return (
-    <StyledCard width="100%" key={task.id} hoverable>
-      <TopWrapper>
-        <StyledTitle h4>{task.title}</StyledTitle>
-        <Text span type="secondary">
-          {' '}
-          ${task.price}
-        </Text>
-      </TopWrapper>
-      <TaskStatus status={task.status} />
-      <Text>{task.description}</Text>
-    </StyledCard>
+    <Link href={`/task/${task.id}`} passHref>
+      <StyledCard width="100%" key={task.id} hoverable>
+        <TopWrapper>
+          <StyledTitle h4>{task.title}</StyledTitle>
+          <Text span type="secondary">
+            {' '}
+            ${task.price}
+          </Text>
+        </TopWrapper>
+        <TaskStatus status={task.status} />
+        <Text>{task.description}</Text>
+      </StyledCard>
+    </Link>
   )
 }
 
