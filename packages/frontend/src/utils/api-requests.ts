@@ -68,15 +68,6 @@ export const getProposals = async (
           const desc = rest.join('')
           title = asd.replace('# ', '')
           description = desc || ''
-          console.log(title, desc)
-          // const [first] = defaultBlockParse(item.data.description as string)
-          // const tittt = first.content
-          //   .map((c) => (typeof c.content === 'string' ? c.content : c.content[0].content))
-          //   .join('')
-          //   .replace('# ', '')
-
-          // console.log(tittt)
-          // console.log(defaultBlockParse(item.data.description as string))
         }
       } catch (e) {
         console.error(e)
