@@ -30,6 +30,15 @@ const UnderTitle = styled(Text)`
   margin-right: 6px;
 `
 
+const TitleWrap = styled.div`
+  text-align: left;
+`
+
+const PriceWrap = styled.div`
+  text-align: right;
+  min-width: 150px;
+`
+
 type Props = {
   closeModal: () => void
 }
@@ -39,10 +48,19 @@ const TaskHeader: FC<Props> = ({ closeModal }) => {
   return (
     <div>
       <TopWrapper>
-        <div>
+        <TitleWrap>
           <TaskStatusDot status={task.status} />
-        </div>
-        <div>
+          <StyledTitle h3>{task.data?.title}</StyledTitle>
+          <FlexWrapper>
+            <UnderTitle type="secondary">
+              <Briefcase size={12} /> {task.orgName}
+            </UnderTitle>
+            <Text style={{ margin: 0 }} type="secondary">
+              • Created at {task.createdAt}
+            </Text>
+          </FlexWrapper>
+        </TitleWrap>
+        <PriceWrap>
           <GradientText
             b
             h3
@@ -57,16 +75,8 @@ const TaskHeader: FC<Props> = ({ closeModal }) => {
             )}
           </GradientText>
           <TaskAction task={task} onSuccess={closeModal} />
-        </div>
+        </PriceWrap>
       </TopWrapper>
-      <FlexWrapper>
-        <UnderTitle>
-          <Briefcase size={12} /> {task.orgName}
-        </UnderTitle>
-        <Text style={{ margin: 0 }} type="secondary">
-          • Created at {task.createdAt}
-        </Text>
-      </FlexWrapper>
       <Spacer h={2} />
     </div>
   )

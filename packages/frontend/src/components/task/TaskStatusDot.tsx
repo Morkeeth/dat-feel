@@ -8,9 +8,9 @@ type Props = {
 }
 
 const TaskStatusDot: FC<Props> = ({ status }) => {
-  const dotType = (): string | undefined => {
+  const dotType = (): string => {
     if (!status) {
-      return undefined
+      return 'success'
     }
     if (status === TaskStatus.OPEN) {
       return 'success'
@@ -24,13 +24,11 @@ const TaskStatusDot: FC<Props> = ({ status }) => {
   }
 
   return (
-    <div>
-      <Dot style={{ marginRight: '20px' }} type={dotType(status)}>
-        <Text b span type="secondary">
-          {status}
-        </Text>
-      </Dot>
-    </div>
+    <Dot style={{ marginRight: '20px' }} type={dotType(status)}>
+      <Text b span type="secondary">
+        {status}
+      </Text>
+    </Dot>
   )
 }
 
