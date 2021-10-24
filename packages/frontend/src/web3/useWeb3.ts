@@ -13,11 +13,10 @@ type UseWeb3Value = {
   isConnected: boolean
   chainId?: number
   isCorrectChain: boolean
-  blockNumber: number | undefined
 }
 
 const useWeb3 = (): UseWeb3Value => {
-  const { account, chainId, isConnected, connect, _web3ReactContext, getBlockNumber } = useWallet()
+  const { account, chainId, isConnected, connect, _web3ReactContext } = useWallet()
   const _chainId = isConnected() ? chainId : defaultNetwork
   const isCorrectChain = true
   const provider = useMemo(() => new JsonRpcProvider('http://localhost:8545'), [chainId])
@@ -26,14 +25,12 @@ const useWeb3 = (): UseWeb3Value => {
     [_web3ReactContext?.library]
   )
 
-  const blockNumber = getBlockNumber && getBlockNumber()
   useEffect(() => {
     web3Store.provider = provider
     web3Store.signer = signer
     web3Store.chainId = chainId as number
     web3Store.contractOwner = account as string
     web3Store.account = account as string
-    web3Store.blockNumber = blockNumber
   }, [signer, provider, chainId, account])
 
   return {
@@ -50,7 +47,6 @@ const useWeb3 = (): UseWeb3Value => {
     library: _web3ReactContext?.library,
     signer,
     provider,
-    blockNumber,
   }
 }
 

@@ -45,7 +45,7 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
 
   return (
     <div>
-      <Button auto onClick={() => setVisible(true)}>
+      <Button auto type="secondary" onClick={() => setVisible(true)}>
         Create Task
       </Button>
       <Modal width="35rem" {...bindings}>

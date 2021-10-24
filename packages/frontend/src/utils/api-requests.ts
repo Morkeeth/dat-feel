@@ -1,4 +1,5 @@
 import { request, gql } from 'graphql-request'
+import { defaultBlockParse } from 'simple-markdown'
 import { GovernanceProposal, GovernanceProposalSource } from '../types'
 
 const tallyQuery = gql`
@@ -58,13 +59,25 @@ export const getProposals = async (
 
   if (source === 'tally') {
     return response.proposals.map((item: any) => {
-      const [title, ...rest] = item.data.description.split('\n')
-      const description = rest.join('')
+      let title = ''
+      let description = ''
+
+      try {
+        if (item.data.description) {
+          const [asd, ...rest] = item.data.description.split('\n')
+          const desc = rest.join('')
+          title = asd.replace('# ', '')
+          description = desc || ''
+        }
+      } catch (e) {
+        console.error(e)
+      }
 
       return {
         id: item.id,
-        title: title?.replace('# ', '') || description,
         body: description,
+        title,
+        // body: description,
         date: new Date(Number(item.data.timestamp) * 1000),
         link: `https://www.withtally.com/governance/compound/proposal/${item.data.proposalId}`,
         proposer: {
