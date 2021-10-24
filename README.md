@@ -1,4 +1,6 @@
-# Dat-feel
+# Dat-feel. ETH Lisbon Hackaton
+
+Create your DAO's bounty board from proposals using Tally/Snapshot. On-board more contributors and make coordination easier. Smooth application, delivery and validation – Contributors gain tokens, XP, reputation and get’s on-chain validated tasks on their profile!
 
 ## Get Started
 
@@ -64,3 +66,10 @@ On the root folder run the following commands after doing the changes to the con
 ```sh
 yarn graph-codegen
 ```
+
+### Deployed Addresses
+
+| Network | Contract           | Address                                      |
+| ------- | ------------------ | -------------------------------------------- |
+| Goerli  | `StandardBounties` | `0xf911dAfcc4313cb737d101E12aace8B600490dCf` |
+| Rinkeby | `StandardBounties` | `0x005BAD45C0886643b3D5A6684D8caD3d66F60761` |
