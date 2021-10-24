@@ -3,9 +3,9 @@ import { proposalStore } from '../stores/proposalStore'
 import { GovernanceProposal } from '../types'
 import { getProposals } from '../utils/api-requests'
 
-const useProposalsFromGovernance = (): UseQueryResult<GovernanceProposal[]> => {
+const useProposalsFromGovernance = (orgName: string): UseQueryResult<GovernanceProposal[]> => {
   const query = useQuery<GovernanceProposal[]>(`proposals-${proposalStore.governanceSource}`, () =>
-    getProposals(proposalStore.governanceSource)
+    getProposals(proposalStore.governanceSource, orgName)
   )
 
   return query

@@ -10,9 +10,10 @@ import useProposalsFromGovernance from '../../hooks/useProposalsFromGovernance'
 
 type Props = {
   close: () => void
+  orgName: string
 }
-const ProposalList: FC<Props> = ({ close }) => {
-  const { data, status } = useProposalsFromGovernance()
+const ProposalList: FC<Props> = ({ close, orgName }) => {
+  const { data, status } = useProposalsFromGovernance(orgName)
 
   return (
     <div>
@@ -28,12 +29,19 @@ const ProposalList: FC<Props> = ({ close }) => {
       {status === 'success' && (
         <Grid.Container gap={4}>
           {data?.map((item) => (
-            <Grid key={item.id} xs={8}>
+            <Grid key={item.id} xs={12}>
               <Card width="100%">
-                <Markdown>{item.title}</Markdown>
+                <Text h3>
+                  <Markdown>{item.title}</Markdown>
+                </Text>
+                <Markdown>{item.body || ''}</Markdown>
+
                 <div>
                   <Text type="secondary" h6>
                     Proposer: {formatAddressToShort(item.proposer.address)}
+                  </Text>
+                  <Text type="secondary" h6>
+                    Date: {item.date.toLocaleDateString()}
                   </Text>
                   <CreateTaskModal close={close} proposal={item} />
                 </div>

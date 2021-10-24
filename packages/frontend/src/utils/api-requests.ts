@@ -1,10 +1,9 @@
 import { request, gql } from 'graphql-request'
-import { markdown } from 'markdown'
 import { GovernanceProposal, GovernanceProposalSource } from '../types'
 
 const tallyQuery = gql`
   query {
-    proposals {
+    proposals(first: 20) {
       id
       proposer {
         id
@@ -45,23 +44,27 @@ const snapshotQuery = gql`
 `
 
 export const getProposals = async (
-  source: GovernanceProposalSource
+  source: GovernanceProposalSource,
+  orgName: string
 ): Promise<GovernanceProposal[]> => {
-  const url =
-    source === 'snapshot'
-      ? 'https://hub.snapshot.org/graphql'
-      : 'https://api.thegraph.com/subgraphs/name/withtally/protocol-compound-v7'
+  const graphUrl =
+    orgName === 'compound'
+      ? 'https://api.thegraph.com/subgraphs/name/withtally/protocol-compound-v7'
+      : 'https://api.thegraph.com/subgraphs/name/withtally/protocol-uniswap-v7'
+  const url = source === 'snapshot' ? 'https://hub.snapshot.org/graphql' : graphUrl
 
   const query = source === 'snapshot' ? snapshotQuery : tallyQuery
   const response = await request(url, query)
 
   if (source === 'tally') {
     return response.proposals.map((item: any) => {
-      const result = markdown(item.data.description)
-      console.log(result)
+      const [title, ...rest] = item.data.description.split('\n')
+      const description = rest.join('')
+
       return {
         id: item.id,
-        title: item.data.description,
+        title: title?.replace('# ', '') || description,
+        body: description,
         date: new Date(Number(item.data.timestamp) * 1000),
         link: `https://www.withtally.com/governance/compound/proposal/${item.data.proposalId}`,
         proposer: {

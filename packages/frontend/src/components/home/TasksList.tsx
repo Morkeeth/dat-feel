@@ -28,7 +28,7 @@ const TasksList: FC<Props> = ({ tasks }) => {
     .sort((a, b) => Number(b.deadline.toString()) - Number(a.deadline.toString()))
   return (
     <Column gap={3}>
-      {tasks.map((task) => (
+      {items.map((task) => (
         <GridColumn key={task.id} direction="column">
           <TaskCard task={task} />
         </GridColumn>

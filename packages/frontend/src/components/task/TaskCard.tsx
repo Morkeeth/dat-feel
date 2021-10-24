@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
-import { Text, Card, useModal } from '@geist-ui/react'
+import { Text, Card, useModal, Link } from '@geist-ui/react'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import TaskStatusDot from './TaskStatusDot'
@@ -20,8 +20,6 @@ const TopWrapper = styled.div`
 
 const StyledTitle = styled(Text)`
   margin-top: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
 `
 
@@ -48,7 +46,6 @@ const TaskCard: FC<{ task: TaskEntity }> = ({ task }) => {
           </GradientText>
         </TopWrapper>
         <StyledTitle h4>{task.data?.title}</StyledTitle>
-        <Markdown>{task.data?.body ? task.data.body : ''}</Markdown>
       </StyledCard>
       <TaskModal task={task} closeModal={() => setVisible(false)} bindings={bindings} />
     </>

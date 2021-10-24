@@ -1,6 +1,16 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { useModal, Button, Modal, Input, Grid, Textarea, useInput, Select } from '@geist-ui/react'
+import {
+  useModal,
+  Button,
+  Modal,
+  Input,
+  Grid,
+  Textarea,
+  useInput,
+  Select,
+  Spacer,
+} from '@geist-ui/react'
 import { observer } from 'mobx-react-lite'
 import { GovernanceProposal } from '../../types'
 import useCreateTask from '../../hooks/useCreateTask'
@@ -10,7 +20,8 @@ type Props = { proposal: GovernanceProposal; close: () => void }
 const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
   const { setVisible, bindings } = useModal()
   const { isCreating, create } = useCreateTask()
-  const { state: body, bindings: descriptionBindings } = useInput('')
+  const { state: title, bindings: titleBindings } = useInput(proposal.title || '')
+  const { state: body, bindings: descriptionBindings } = useInput(proposal.body || '')
   const { state: compansation, bindings: compansationBindings } = useInput('')
   const [level, setLevel] = React.useState('')
 
@@ -43,15 +54,29 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
           <form onSubmit={submit}>
             <Grid.Container gap={2}>
               <Grid xs={24}>
-                <Input width="100%" placeholder="Title" value={proposal.title} disabled />
+                <Input
+                  width="100%"
+                  placeholder="Title"
+                  {...titleBindings}
+                  value={title}
+                  // disabled={Boolean(proposal.title)}
+                />
               </Grid>
               <Grid xs={24}>
-                <Textarea width="100%" placeholder="Description" disabled={proposal.description} />
+                <Textarea
+                  width="100%"
+                  placeholder="Description"
+                  {...descriptionBindings}
+                  value={body}
+                  rows={6}
+
+                  // disabled={Boolean(proposal.body)}
+                />
               </Grid>
               <Grid xs={24}>
                 <Input
                   width="100%"
-                  icon="ETH"
+                  labelRight="ETH"
                   placeholder="Compansation"
                   required
                   {...compansationBindings}
@@ -79,8 +104,11 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
                   placeholder="Proposer"
                   disabled
                   value={proposal.proposer.address}
-                />
+                >
+                  Proposer
+                </Input>
               </Grid>
+              <Spacer h={2} />
 
               <Grid xs={24}>
                 <Button loading={isCreating} width="100%" htmlType="submit">

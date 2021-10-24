@@ -2,6 +2,7 @@ import * as React from 'react'
 import { FC } from 'react'
 import styled from 'styled-components'
 import { Text, Tag } from '@geist-ui/react'
+import Markdown from 'markdown-to-jsx'
 import { OrgMetaData } from '../../types'
 
 const Container = styled.div`
@@ -48,10 +49,6 @@ type Props = { org: OrgMetaData }
 const OrgHero: FC<Props> = ({ org }) => {
   return (
     <Container>
-      {/* <img src={org.header} />
-      <Logo>
-        <img src={org.logo} />
-      </Logo> */}
       <LogoWrap>
         <StyledLogo src={org.logoUri} />
         <TitleWrap>
@@ -59,7 +56,7 @@ const OrgHero: FC<Props> = ({ org }) => {
             {org.name}
           </Text>
           <Text h4 style={{ maxWidth: 600 }} type="secondary">
-            {org.description}
+            <Markdown>{org.description}</Markdown>
           </Text>
           <StyledTag type="secondary">Tasks completed: {org.tasks}</StyledTag>
           <StyledTag type="secondary">TVL: {org.tvl}</StyledTag>

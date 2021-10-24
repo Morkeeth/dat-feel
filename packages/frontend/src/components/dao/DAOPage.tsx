@@ -26,7 +26,7 @@ const DAOPage: FC<Props> = ({ org }) => {
             title="Governance proposals"
             subtitle="Create a task from one of your proposals"
           >
-            <ProposalList close={() => setRandomKey(Math.random().toString())} />
+            <ProposalList orgName={org.url} close={() => setRandomKey(Math.random().toString())} />
           </Collapse>
           <Spacer h={4} />
         </>
