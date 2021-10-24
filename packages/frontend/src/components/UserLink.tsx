@@ -10,13 +10,19 @@ type Props = {
   link?: boolean
 }
 
-const UserLink: FC<Props> = ({ address, label, link, ...props }) => {
+const UserLink: FC<Props> = ({
+  address,
+  label,
+  link,
+  src = 'https://unix.bio/assets/avatar.png',
+  ...props
+}) => {
   const node = (
     <User
       {...props}
       onClick={(e) => e.stopPropagation()}
       paddingLeft="0"
-      src="https://unix.bio/assets/avatar.png"
+      src={src}
       name={formatAddressToShort(address)}
     >
       {label}

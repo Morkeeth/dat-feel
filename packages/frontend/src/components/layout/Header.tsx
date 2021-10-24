@@ -19,9 +19,11 @@ const Header: FC = () => {
               </NextLink>
             </Grid>
             <Grid>
-              <NextLink href={`/user/${account}`} passHref>
-                <Link>Account</Link>
-              </NextLink>
+              {account && (
+                <NextLink href={`/user/${account}`} passHref>
+                  <Link>Account</Link>
+                </NextLink>
+              )}
             </Grid>
           </Grid.Container>
         </Grid>
