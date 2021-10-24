@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Text, Button, Spacer } from '@geist-ui/react'
+import { Text, Button, Spacer, Link } from '@geist-ui/react'
 import { Briefcase } from '@geist-ui/react-icons'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
@@ -18,6 +18,7 @@ const StyledTitle = styled(Text)`
 const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
 `
 
 const FlexWrapper = styled.div`
@@ -32,6 +33,7 @@ const UnderTitle = styled(Text)`
 
 const TitleWrap = styled.div`
   text-align: left;
+  margin-right: 40px;
 `
 
 const PriceWrap = styled.div`
@@ -77,6 +79,7 @@ const TaskHeader: FC<Props> = ({ closeModal }) => {
           <TaskAction task={task} onSuccess={closeModal} />
         </PriceWrap>
       </TopWrapper>
+
       <Spacer h={2} />
     </div>
   )

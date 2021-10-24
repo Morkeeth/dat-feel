@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { FC } from 'react'
-import { Spacer, Text } from '@geist-ui/react'
+import { Link, Spacer, Text, User } from '@geist-ui/react'
+import styled from 'styled-components'
 import UserLink from '../UserLink'
 import { useTaskContext } from '../../contexts/TaskContext'
-import styled from 'styled-components'
 import { TaskStatus } from '../../config/enums'
 
 const Container = styled.div`
@@ -32,6 +32,10 @@ const TaskContact: FC<Props> = () => {
       {task.status !== TaskStatus.OPEN && (
         <StyledUserLink label="Assigned user" address={task.fullfiller} link />
       )}
+      {/* 
+      <Link target="_blank" href={task.data?.proposalUrl}>
+        Proposal link
+      </Link> */}
     </Container>
   )
 }
