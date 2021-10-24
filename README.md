@@ -1,4 +1,6 @@
-# Dat-feel
+# Dat-feel. ETH Lisbon Hackaton
+
+Create your DAO's bounty board from proposals using Tally/Snapshot. On-board more contributors and make coordination easier. Smooth application, delivery and validation – Contributors gain tokens, XP, reputation and get’s on-chain validated tasks on their profile!
 
 ## Get Started
 
