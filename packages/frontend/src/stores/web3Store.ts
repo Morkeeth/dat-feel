@@ -15,7 +15,7 @@ type Store = {
 export const web3Store = makeAutoObservable<Store>({
   provider: undefined,
   signer: undefined,
-  chainId: undefined,
+  chainId: 5, //   process.env.NODE_ENV === 'development' ? 1337 : 4,
   contractOwner: undefined,
   account: undefined,
   blockNumber: 0,

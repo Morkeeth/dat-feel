@@ -20,5 +20,6 @@ export const getAddressFromDeployment = (
     StandardBounties: STANDARD_BOUNTIES_ADDRESS,
   }
 
+  console.log(contracts[contractName][chainId], contractName, chainId)
   return contracts[contractName][chainId]
 }
