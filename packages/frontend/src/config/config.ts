@@ -1,6 +1,6 @@
 export const organizations = [
   {
-    owner: true
+    owner: false
       ? '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
       : '0xa50F556168a2A67EeABD5BAf821212a6F0c8Fe1E',
     url: 'compound',
@@ -8,7 +8,7 @@ export const organizations = [
   },
 
   {
-    owner: true
+    owner: false
       ? '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
       : '0xA4B7CEe8409673624EC9B075f5A4f9b8EbAdEd49',
     url: 'uniswap',

@@ -97,6 +97,9 @@ export const taskStore = makeAutoObservable<Store>({
   },
 
   fetchTasks: async () => {
+    runInAction(() => {
+      taskStore.isFetching = true
+    })
     const contract = StandardBounties__factory.connect(
       getAddressFromDeployment('StandardBounties', web3Store.chainId),
       web3Store.provider
@@ -169,6 +172,7 @@ export const taskStore = makeAutoObservable<Store>({
 
     runInAction(() => {
       taskStore.tasks = _tasks
+      taskStore.isFetching = false
     })
   },
 })
