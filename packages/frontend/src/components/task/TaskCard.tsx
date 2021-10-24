@@ -24,8 +24,7 @@ const StyledTitle = styled(Text)`
 `
 
 const StyledCard = styled(Card)`
-  max-height: 150px;
-  min-height: 150px;
+  min-height: 200px;
   &:hover {
     cursor: pointer;
   }

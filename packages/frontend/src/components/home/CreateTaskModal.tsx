@@ -26,12 +26,13 @@ const CreateTaskModal: FC<Props> = ({ proposal, close }) => {
   const [level, setLevel] = React.useState('')
 
   const submit = (e: any) => {
+    e.preventDefault()
     if (isCreating) {
       return
     }
 
     const data = {
-      title: proposal.title,
+      title,
       body,
       level,
       proposalUrl: proposal.link,

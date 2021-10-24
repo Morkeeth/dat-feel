@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import { ethers } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import TaskEntity from './entities/TaskEntity'
 import { web3Store } from './web3Store'
 import { StandardBounties, StandardBounties__factory } from '../generated/types'
@@ -49,7 +49,7 @@ export const taskStore = makeAutoObservable<Store>({
       )
       const account = web3Store.account
 
-      await contract.issueAndContribute(
+      const tx = await contract.issueAndContribute(
         account as string,
         [],
         [account],
@@ -60,6 +60,9 @@ export const taskStore = makeAutoObservable<Store>({
         ethers.utils.parseEther(compansation),
         { value: ethers.utils.parseEther(compansation) }
       )
+
+      tx.wait(1)
+
       taskStore.fetchTasks()
     } catch (error) {
       return {
@@ -84,9 +87,13 @@ export const taskStore = makeAutoObservable<Store>({
     const normalizedUsers = users
       .map(({ args }) => {
         const [userAddress, xp] = args
+        const xpinfo = xp.isZero()
+          ? parseInt(userAddress, 16).toFixed(4)
+          : `${Math.floor(parseFloat(formatBigNumber(xp)))}`
+
         return {
           userAddress,
-          xp: `${Math.floor(parseFloat(formatBigNumber(xp)))}`,
+          xp: xpinfo,
         }
       })
       .sort((userA, userB) => (userB.xp > userA.xp ? 1 : -1))

@@ -81,21 +81,27 @@ class TaskEntity {
   acceptTask = async () => {
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
     const contract = StandardBounties__factory.connect(address, web3Store.signer)
-    await contract.acceptFulfillment(this.approvers[0], this.id, this.fullFillId as any, 0, [
-      this.amount,
-    ])
+    const tx = await contract.acceptFulfillment(
+      this.approvers[0],
+      this.id,
+      this.fullFillId as any,
+      0,
+      [this.amount]
+    )
+    tx.wait(1)
     taskStore.fetchTasks()
   }
 
   fullfill = async () => {
     const address = getAddressFromDeployment('StandardBounties', web3Store.chainId)
     const contract = StandardBounties__factory.connect(address, web3Store.signer)
-    await contract.fulfillBounty(
+    const tx = await contract.fulfillBounty(
       web3Store.contractOwner,
       this.id,
       [web3Store.account],
       'https://ipfs.infura.io/ipfs/QmQ89DK4GFAejMh4SCxtWDRu5Di3WMrp6aZnzZ2pMtEfPS'
     )
+    tx.wait(1)
 
     taskStore.fetchTasks()
   }

@@ -12,7 +12,12 @@ const Leaderboard: FC<Props> = ({ owner }) => {
   const { users, loading } = useTasks(owner)
 
   if (loading) {
-    return <Spinner />
+    return (
+      <>
+        <Spacer h={2} />
+        <Spinner />
+      </>
+    )
   }
 
   if (users.length === 0) {
