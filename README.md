@@ -71,5 +71,5 @@ yarn graph-codegen
 
 | Network | Contract           | Address                                      |
 | ------- | ------------------ | -------------------------------------------- |
-| Goerli  | `StandardBounties` | `0xf911dAfcc4313cb737d101E12aace8B600490dCf` |
+| Goerli  | `StandardBounties` | `0x43A4860EF71E0BB19982240187ce981423B42AcA` |
 | Rinkeby | `StandardBounties` | `0x005BAD45C0886643b3D5A6684D8caD3d66F60761` |
