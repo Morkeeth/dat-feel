@@ -10,4 +10,9 @@ export const organizations = [
     url: 'uniswap',
     ipfs: 'https://ipfs.infura.io/ipfs/QmVsjWvwGLtXpWyzcVyRnaQRKH2M3PbULQREw2fQmjSnLa',
   },
+  {
+    owner: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+    url: 'mate',
+    ipfs: 'https://ipfs.infura.io/ipfs/QmfYUJHuiFgbs7Y4QegtgMuBDZNH4Z4JmwCAngkadqnGyB',
+  },
 ]
