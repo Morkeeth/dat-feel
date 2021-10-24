@@ -75,8 +75,6 @@ class TaskEntity {
 
     runInAction(() => {
       this.data = result.data as any
-
-      console.log(result.data)
     })
   }
 

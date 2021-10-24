@@ -3,11 +3,22 @@ import * as React from 'react'
 import { FC } from 'react'
 import { observer } from 'mobx-react-lite'
 import Markdown from 'markdown-to-jsx'
+import styled from 'styled-components'
 import CreateTaskModal from './CreateTaskModal'
 import { proposalStore } from '../../stores/proposalStore'
 import { formatAddressToShort } from '../../utils/formatters'
 import useProposalsFromGovernance from '../../hooks/useProposalsFromGovernance'
 
+const StyledMarkdown = styled(Markdown)``
+const Body = styled.div`
+  h2 {
+    font-size: 16px;
+  }
+  ,
+  h3 {
+    font-size: 16px;
+  }
+`
 type Props = {
   close: () => void
   orgName: string
@@ -34,7 +45,7 @@ const ProposalList: FC<Props> = ({ close, orgName }) => {
                 <Text h3>
                   <Markdown>{item.title}</Markdown>
                 </Text>
-                <Markdown>{item.body || ''}</Markdown>
+                <Body>{item.body && <StyledMarkdown>{item.body || ''}</StyledMarkdown>}</Body>
 
                 <div>
                   <Text type="secondary" h6>
