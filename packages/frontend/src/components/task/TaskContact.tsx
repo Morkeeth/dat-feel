@@ -28,7 +28,11 @@ const TaskContact: FC<Props> = () => {
       <Text h4 type="secondary">
         Contact
       </Text>
-      <StyledUserLink label="Task validator" address={task.approvers[0]} />
+      <StyledUserLink
+        src="https://avatars.dicebear.com/api/adventurer/wall.svg"
+        label="Task validator"
+        address={task.approvers[0]}
+      />
       {task.status !== TaskStatus.OPEN && (
         <StyledUserLink label="Assigned user" address={task.fullfiller} link />
       )}
