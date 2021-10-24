@@ -66,3 +66,10 @@ On the root folder run the following commands after doing the changes to the con
 ```sh
 yarn graph-codegen
 ```
+
+### Deployed Addresses
+
+| Network | Contract           | Address                                      |
+| ------- | ------------------ | -------------------------------------------- |
+| Goerli  | `StandardBounties` | `0xf911dAfcc4313cb737d101E12aace8B600490dCf` |
+| Rinkeby | `StandardBounties` | `0x005BAD45C0886643b3D5A6684D8caD3d66F60761` |
