@@ -10,8 +10,8 @@ const HomePage: FC = () => {
     <div>
       <Spacer h={5} />
       <Organizations />
-      <Leaderboard />
       <Board />
+      <Leaderboard />
     </div>
   )
 }

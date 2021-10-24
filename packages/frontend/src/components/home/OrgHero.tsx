@@ -48,17 +48,13 @@ type Props = { org: OrgMetaData }
 const OrgHero: FC<Props> = ({ org }) => {
   return (
     <Container>
-      {/* <img src={org.header} />
-      <Logo>
-        <img src={org.logo} />
-      </Logo> */}
       <LogoWrap>
         <StyledLogo src={org.logoUri} />
         <TitleWrap>
           <Text h1 style={{ margin: 0 }}>
             {org.name}
           </Text>
-          <Text h4 style={{ maxWidth: 600 }} type="secondary">
+          <Text style={{ maxWidth: 600, marginTop: 0 }} type="secondary">
             {org.description}
           </Text>
           <StyledTag type="secondary">Tasks completed: {org.tasks}</StyledTag>
