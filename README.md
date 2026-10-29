@@ -1,5 +1,13 @@
 # Dat-feel. ETH Lisbon Hackaton
 
+**Dat-feel turns a DAO's proposals on Tally or Snapshot into a bounty board, so contributors can apply, deliver and get validated on-chain.**
+
+- Problem: DAOs pass proposals but have no smooth way to turn them into work a new contributor can pick up.
+- For: DAOs onboarding contributors, and contributors who want tokens, XP, reputation and validated tasks on their profile.
+- What it is: one yarn workspace with a Next.js frontend, Hardhat contracts and a subgraph.
+- Try it: [dat-feel.vercel.app](https://dat-feel.vercel.app/) or the four-terminal setup below. Early experiment from the ETH Lisbon hackathon, October 2021.
+
+
 Create your DAO's bounty board from proposals using Tally/Snapshot. On-board more contributors and make coordination easier. Smooth application, delivery and validation – Contributors gain tokens, XP, reputation and get’s on-chain validated tasks on their profile!
 
 ## Get Started
