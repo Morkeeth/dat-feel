@@ -1,12 +1,21 @@
 # Dat-feel. ETH Lisbon Hackaton
 
-**Dat-feel turns a DAO's proposals on Tally or Snapshot into a bounty board, so contributors can apply, deliver and get validated on-chain.**
+## TLDR
+
+Turn DAO proposals into a bounty board where contributors can apply and deliver work.<br>
+For DAOs connecting governance decisions to contributor tasks and validation.<br>
+The hackathon prototype combines a frontend, contracts and a subgraph; review each service before using a wallet.
+
+## The problem and approach
 
 - Problem: DAOs pass proposals but have no smooth way to turn them into work a new contributor can pick up.
-- For: DAOs onboarding contributors, and contributors who want tokens, XP, reputation and validated tasks on their profile.
 - What it is: one yarn workspace with a Next.js frontend, Hardhat contracts and a subgraph.
-- Try it: [dat-feel.vercel.app](https://dat-feel.vercel.app/) or the four-terminal setup below. Early experiment from the ETH Lisbon hackathon, October 2021.
 
+## Review and pick up the work
+
+[Agent guide](AGENTS.md)
+
+Start with the linked source, setup and evidence. Recorded demos and sample data keep their original scope; use the repository instructions for a fresh run.
 
 Create your DAO's bounty board from proposals using Tally/Snapshot. On-board more contributors and make coordination easier. Smooth application, delivery and validation – Contributors gain tokens, XP, reputation and get’s on-chain validated tasks on their profile!
 
@@ -81,3 +90,7 @@ yarn graph-codegen
 | ------- | ------------------ | -------------------------------------------- |
 | Goerli  | `StandardBounties` | `0x43A4860EF71E0BB19982240187ce981423B42AcA` |
 | Rinkeby | `StandardBounties` | `0x005BAD45C0886643b3D5A6684D8caD3d66F60761` |
+
+## License and data boundaries
+
+This checkout has no root license file establishing general reuse rights. Data, provider responses, media, fonts and other third-party assets may have separate terms. Repository access alone does not grant rights to those materials. 
